@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Palla Murali Krishna — Software Developer Portfolio</title>
+  <meta name="description" content="B.Tech IT student & full-stack developer specializing in MERN stack, AI, and DSA." />
+  <meta name="keywords" content="software developer, MERN stack, AI, full-stack, portfolio" />
+  <meta name="author" content="Palla Murali Krishna" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Murali Krishna Portfolio" />
+  <meta property="og:title" content="Palla Murali Krishna — Software Developer" />
+  <meta property="og:description" content="B.Tech IT student building full-stack applications with MERN stack and AI. Strong in DSA and backend development." />
+  <meta property="og:url" content="https://pmuralikrishna.dev" />
+  <meta property="og:image" content="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=0a0003" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Palla Murali Krishna — Software Developer" />
+  <meta name="twitter:description" content="B.Tech IT student building MERN stack applications and AI systems." />
+  <meta name="twitter:image" content="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=0a0003" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ========== BOOT LOADER ========== -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-pulse">
+        <div class="pulse-ring pulse-ring-1"></div>
+        <div class="pulse-ring pulse-ring-2"></div>
+        <div class="pulse-ring pulse-ring-3"></div>
+        <div class="loader-infinity">∞</div>
+      </div>
+      <div class="loader-title">Murali.dev</div>
+      <div class="loader-status" id="loaderStatus">Loading Portfolio...</div>
+    </div>
+  </div>
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Particle Canvas -->
+  <canvas class="particle-canvas" id="particleCanvas"></canvas>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- Neon Grid Background -->
+  <div class="neon-bg">
+    <div class="grid-overlay"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <div class="glow glow-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#home" class="logo">
+        <span class="logo-neon">∞</span> Murali.dev
+      </a>
+      <div class="nav-links" id="navLinks">
+        <div class="nav-pill" id="navPill"></div>
+        <a href="#home"     class="nav-link active" data-text="Home">Home</a>
+        <a href="#about"    class="nav-link" data-text="About">About</a>
+        <a href="#skills"   class="nav-link" data-text="Skills">Skills</a>
+        <a href="#softskills" class="nav-link" data-text="Soft Skills">Soft Skills</a>
+        <a href="#experience" class="nav-link" data-text="Experience">Experience</a>
+        <a href="#education"  class="nav-link" data-text="Education">Education</a>
+        <a href="#projects" class="nav-link" data-text="Projects">Projects</a>
+        <a href="#certs"    class="nav-link" data-text="Certs">Certs</a>
+        <a href="#contact"  class="nav-link" data-text="Contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle Theme">
+          <i class="fas fa-sun"></i><i class="fas fa-moon"></i>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HOME / HERO ========== -->
+  <section class="hero" id="home">
+    <div class="hero-container">
+      <div class="hero-left">
+        <div class="hero-badge scroll-reveal" data-delay="0">
+          <span class="badge-dot"></span>Open to Opportunities
+        </div>
+        <h1 class="hero-title scroll-reveal" data-delay="1">
+          <span class="line">Hi, I'm</span>
+          <span class="line name-line"><span class="neon-text">Palla Murali Krishna</span></span>
+        </h1>
+        <div class="hero-typed scroll-reveal" data-delay="2">
+          <span class="typed-label">I build</span>
+          <span class="typed-words" id="typedWords"></span>
+          <span class="typed-cursor">_</span>
+        </div>
+        <p class="hero-profession scroll-reveal" data-delay="3">
+          <strong>Full-Stack Developer & AI Engineer</strong>
+        </p>
+        <p class="hero-desc scroll-reveal" data-delay="3">
+          Building scalable applications with clean code, strong DSA fundamentals, and innovative technology. 
+          MERN stack specialist with AI integration expertise.
+        </p>
+        <div class="hero-btns scroll-reveal" data-delay="4">
+          <a href="#projects" class="btn neon-btn"><span>View Projects</span><i class="fas fa-arrow-right"></i></a>
+          <a href="#contact"  class="btn ghost-btn"><span>Contact Me</span></a>
+          <a href="https://drive.google.com/file/d/1RyEhmc1w2BXEZekaHzhlp34RjCan_M0f/view?usp=sharing" target="_blank" class="btn ghost-btn"><span>Resume</span><i class="fas fa-download"></i></a>
+        </div>
+        <div class="hero-social scroll-reveal" data-delay="5">
+          <a href="https://github.com/murali-krishna-palla" class="social-icon" data-hover="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/murali-krishna-palla-324111312/" class="social-icon" data-hover="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="hero-right scroll-reveal" data-delay="2" data-anim="scale">
+        <div class="profile-wrapper">
+          <div class="profile-ring"></div>
+          <div class="profile-ring ring-2"></div>
+          <img src="profile.jpg" alt="Palla Murali Krishna" class="profile-img" />
+        </div>
+        <div class="profile-status"><span class="status-dot"></span>Open to Internships</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">About <span class="neon-text">Me</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="about-grid">
+        <div class="about-card about-bio scroll-reveal" data-delay="0" data-anim="slide-right">
+          <h3>Who Am I?</h3>
+          <p>I'm a Full-Stack Developer and AI Engineer passionate about building scalable applications and solving real-world problems. From AI-powered systems to elegant backend architectures — I create solutions that matter.</p>
+          <p>Driven by strong DSA fundamentals and modern web technologies, I specialize in MERN stack development with AI integration. GATE AIR 9602 (CS) with 200+ LeetCode problems solved.</p>
+        </div>
+        <div class="about-card about-details scroll-reveal" data-delay="1" data-anim="slide-left">
+          <div class="detail"><i class="fas fa-map-marker-alt"></i><span>Bhimavaram, Andhra Pradesh</span></div>
+          <div class="detail"><i class="fas fa-university"></i><span>Vishnu Institute of Technology</span></div>
+          <div class="detail"><i class="fas fa-envelope"></i><span>pmuralikrishna520@gmail.com</span></div>
+          <div class="detail"><i class="fas fa-phone"></i><span>+91 9951846255</span></div>
+          <a href="https://drive.google.com/file/d/1RyEhmc1w2BXEZekaHzhlp34RjCan_M0f/view?usp=sharing" target="_blank" class="btn neon-btn btn-sm">
+            <i class="fas fa-download"></i><span>Download CV</span>
+          </a>
+        </div>
+        <div class="about-card about-numbers scroll-reveal" data-delay="2" data-anim="slide-up">
+          <div class="num-item"><span class="num" data-count="8">0</span><span class="num-plus">+</span><span class="num-label">Full Stack Projects</span></div>
+          <div class="num-item"><span class="num" data-count="200">0</span><span class="num-plus">+</span><span class="num-label">LeetCode Problems</span></div>
+          <div class="num-item"><span class="num" data-count="2">0</span><span class="num-label">NPTEL Certifications</span></div>
+          <div class="num-item"><span class="num" data-count="9602">0</span><span class="num-label">GATE 2026 AIR</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SKILLS / TECH STACK ========== -->
+  <section class="section section-alt" id="skills">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">Tech <span class="neon-text">Stack</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <!-- Tech Stack Filter Buttons -->
+      <div class="tech-filter scroll-reveal" data-delay="0">
+        <button class="filter-btn active" data-filter="all"><i class="fas fa-star-half-alt"></i> All</button>
+        <button class="filter-btn" data-filter="languages"><i class="fas fa-code"></i> Languages</button>
+        <button class="filter-btn" data-filter="frameworks"><i class="fas fa-cube"></i> Frameworks</button>
+        <button class="filter-btn" data-filter="libraries"><i class="fas fa-boxes"></i> Libraries</button>
+        <button class="filter-btn" data-filter="tools"><i class="fas fa-wrench"></i> Tools</button>
+      </div>
+      <div class="stack-icons scroll-reveal" data-delay="0" data-anim="slide-up">
+        <!-- Languages -->
+        <div class="tech-icon" data-category="languages"><i class="devicon-java-plain colored"></i><span>Java</span></div>
+        <div class="tech-icon" data-category="languages"><i class="devicon-python-plain colored"></i><span>Python</span></div>
+        <div class="tech-icon" data-category="languages"><i class="devicon-javascript-plain colored"></i><span>JavaScript</span></div>
+        <div class="tech-icon" data-category="languages"><i class="devicon-c-original colored"></i><span>C</span></div>
+        <div class="tech-icon" data-category="languages"><i class="devicon-sql-original"></i><span>SQL</span></div>
+        <div class="tech-icon" data-category="languages"><i class="devicon-html5-original colored"></i><span>HTML</span></div>
+        <div class="tech-icon" data-category="languages"><i class="devicon-css3-original colored"></i><span>CSS</span></div>
+        
+        <!-- Frameworks -->
+        <div class="tech-icon" data-category="frameworks"><i class="devicon-react-original colored"></i><span>React</span></div>
+        <div class="tech-icon" data-category="frameworks"><i class="devicon-nodejs-plain colored"></i><span>Node.js</span></div>
+        <div class="tech-icon" data-category="frameworks"><i class="devicon-express-original"></i><span>Express</span></div>
+        <div class="tech-icon" data-category="frameworks"><i class="devicon-flask-original"></i><span>Flask</span></div>
+        <div class="tech-icon" data-category="frameworks"><i class="devicon-tailwindcss-original colored"></i><span>Tailwind CSS</span></div>
+        
+        <!-- Libraries -->
+        <div class="tech-icon" data-category="libraries"><i class="fas fa-cube" style="color:#8b5cf6;"></i><span>NumPy</span></div>
+        <div class="tech-icon" data-category="libraries"><i class="fas fa-cube" style="color:#06b6d4;"></i><span>Pandas</span></div>
+        <div class="tech-icon" data-category="libraries"><i class="fas fa-chart-bar" style="color:#ec4899;"></i><span>Matplotlib</span></div>
+        <div class="tech-icon" data-category="libraries"><i class="fas fa-cube" style="color:#f59e0b;"></i><span>Scikit-Learn</span></div>
+        
+        <!-- Tools -->
+        <div class="tech-icon" data-category="tools"><i class="devicon-git-plain colored"></i><span>Git</span></div>
+        <div class="tech-icon" data-category="tools"><i class="devicon-github-original"></i><span>GitHub</span></div>
+        <div class="tech-icon" data-category="tools"><i class="devicon-docker-plain colored"></i><span>Docker</span></div>
+        <div class="tech-icon" data-category="tools"><i class="devicon-postman-plain colored"></i><span>Postman</span></div>
+        <div class="tech-icon" data-category="tools"><i class="devicon-vscode-plain colored"></i><span>VS Code</span></div>
+        <div class="tech-icon" data-category="tools"><i class="devicon-linux-plain"></i><span>Linux</span></div>
+        <div class="tech-icon" data-category="tools"><i class="devicon-mongodb-plain colored"></i><span>MongoDB</span></div>
+        <div class="tech-icon" data-category="tools"><i class="devicon-firebase-plain colored"></i><span>Firebase</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SOFT SKILLS ========== -->
+  <section class="section" id="softskills">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">Soft <span class="neon-text">Skills</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-intro scroll-reveal" style="text-align: center; margin-bottom: 48px; color: var(--text-2); max-width: 600px; margin-left: auto; margin-right: auto;">
+        Beyond technical expertise — the human qualities that drive collaboration, innovation, and excellence.
+      </p>
+      <div class="softskills-grid">
+        <div class="softskill-card scroll-reveal" data-delay="0" data-anim="slide-up">
+          <div class="softskill-icon"><i class="fas fa-lightbulb"></i></div>
+          <h3>Problem Solving</h3>
+          <p>Breaking down complex challenges into clear, logical steps — finding efficient, creative solutions through structured algorithmic thinking and DSA practice.</p>
+        </div>
+        <div class="softskill-card scroll-reveal" data-delay="1" data-anim="slide-up">
+          <div class="softskill-icon"><i class="fas fa-handshake"></i></div>
+          <h3>Team Player</h3>
+          <p>Collaborative by nature — actively contributing to team projects, sharing knowledge, prioritizing shared goals and supporting teammates to achieve the best outcomes.</p>
+        </div>
+        <div class="softskill-card scroll-reveal" data-delay="2" data-anim="slide-up">
+          <div class="softskill-icon"><i class="fas fa-arrows-rotate"></i></div>
+          <h3>Adaptability</h3>
+          <p>Comfortable switching between programming languages, tools, and problem domains — from MERN stack to AI systems — with a growth mindset and willingness to learn fast.</p>
+        </div>
+        <div class="softskill-card scroll-reveal" data-delay="3" data-anim="slide-up">
+          <div class="softskill-icon"><i class="fas fa-comments"></i></div>
+          <h3>Communication</h3>
+          <p>Translating complex technical concepts into clear, compelling narratives — demonstrated through code documentation, presentations, and effective team collaboration.</p>
+        </div>
+        <div class="softskill-card scroll-reveal" data-delay="4" data-anim="slide-up">
+          <div class="softskill-icon"><i class="fas fa-brain"></i></div>
+          <h3>Analytical Thinking</h3>
+          <p>Naturally data-driven — approaching every problem with curiosity, rigor, and a focus on actionable insights. Strong logical reasoning and structured analysis skills.</p>
+        </div>
+        <div class="softskill-card scroll-reveal" data-delay="5" data-anim="slide-up">
+          <div class="softskill-icon"><i class="fas fa-rocket"></i></div>
+          <h3>Initiative & Leadership</h3>
+          <p>Self-motivated and proactive — taking ownership of projects, driving improvements, and inspiring others through consistent excellence and positive energy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EXPERIENCE ========== -->
+  <section class="section" id="experience">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">Work <span class="neon-text">Experience</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="exp-grid">
+
+        <div class="exp-card scroll-reveal" data-delay="0" data-anim="slide-up">
+          <div class="exp-header">
+            <span class="exp-role">Independent Developer</span>
+            <span class="exp-badge">Full-time</span>
+          </div>
+          <div class="exp-company"><i class="fas fa-laptop-code" style="margin-right:6px"></i>MERN Stack Development</div>
+          <div class="exp-date">2025 — Present · ongoing</div>
+          <p class="exp-desc">Developed 3+ full-stack applications using MERN stack and Python frameworks. Implemented scalable REST APIs with Node.js and Express.js for authentication and database operations. Optimized MongoDB schemas improving query performance by approximately 25%.</p>
+          <div class="exp-tags">
+            <span>React</span><span>Node.js</span><span>Express</span><span>MongoDB</span><span>Python</span>
+          </div>
+        </div>
+
+        <div class="exp-card scroll-reveal" data-delay="1" data-anim="slide-up">
+          <div class="exp-header">
+            <span class="exp-role">Student Developer</span>
+            <span class="exp-badge">Part-time</span>
+          </div>
+          <div class="exp-company"><i class="fas fa-code" style="margin-right:6px"></i>Vishnu Institute of Technology</div>
+          <div class="exp-date">2023 — Present · ongoing</div>
+          <p class="exp-desc">Completed 200+ LeetCode problems and Striver A2Z DSA Sheet. Achieved 9602 All India Rank in GATE 2026 (Computer Science). Earned NPTEL Elite Certifications in Artificial Intelligence and Data Structures & Algorithms.</p>
+          <div class="exp-tags">
+            <span>DSA</span><span>Java</span><span>Python</span><span>Algorithms</span><span>LeetCode</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EDUCATION ========== -->
+  <section class="section section-alt" id="education">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">My <span class="neon-text">Education</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item scroll-reveal" data-delay="0" data-anim="slide-right">
+          <div class="tl-dot"><i class="fas fa-graduation-cap"></i></div>
+          <div class="tl-card">
+            <span class="tl-date">2023 — 2027</span>
+            <h3>B.Tech Information Technology</h3>
+            <h4>Vishnu Institute of Technology, Bhimavaram</h4>
+            <p>Currently in 4th year · Focus: Full-Stack Development & AI · GATE 2026: Rank 9602</p>
+            <div class="tl-tags"><span>Data Structures</span><span>Algorithms</span><span>MERN Stack</span><span>AI Systems</span></div>
+          </div>
+        </div>
+        <div class="timeline-item scroll-reveal" data-delay="1" data-anim="slide-right">
+          <div class="tl-dot"><i class="fas fa-book"></i></div>
+          <div class="tl-card">
+            <span class="tl-date">2021 — 2023</span>
+            <h3>Class XII (CBSE)</h3>
+            <h4>Sri Prakash Vidya Niketan, Payakaraopeta</h4>
+            <p>Percentage: 74.2% · Strong foundation in Mathematics and Science</p>
+            <div class="tl-tags"><span>Mathematics</span><span>Physics</span><span>Chemistry</span><span>Computer Science</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECTS ========== -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">My <span class="neon-text">Projects</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="project-grid">
+
+        <div class="project-card scroll-reveal" data-delay="0" data-anim="slide-up">
+          <div class="proj-header" style="--glow-color:#ff0040;">
+            <div class="proj-icon"><i class="fas fa-robot"></i></div>
+            <div class="proj-links">
+              <a href="#" class="view-details-btn" data-project="0"><i class="fas fa-eye"></i></a>
+              <a href="https://github.com/murali-krishna-palla" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>PathForge AI</h3>
+          <p>AI-powered career roadmap platform generating personalized guidance based on skills and goals. Implemented Skill Gap Analysis using LLM recommendations.</p>
+          <div class="proj-tech"><span>React</span><span>Node.js</span><span>MongoDB</span><span>Gemini API</span></div>
+        </div>
+
+        <div class="project-card scroll-reveal" data-delay="1" data-anim="slide-up">
+          <div class="proj-header" style="--glow-color:#cc0033;">
+            <div class="proj-icon"><i class="fas fa-file-pdf"></i></div>
+            <div class="proj-links">
+              <a href="#" class="view-details-btn" data-project="1"><i class="fas fa-eye"></i></a>
+              <a href="https://github.com/murali-krishna-palla" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>AI ATS Resume Analyzer</h3>
+          <p>Resume analysis system improving job-matching accuracy by 40%. Built with keyword scoring and PDF parsing using PyPDF2 and LLM-based evaluation.</p>
+          <div class="proj-tech"><span>Python</span><span>Flask</span><span>Gemini API</span><span>PyPDF2</span></div>
+        </div>
+
+        <div class="project-card scroll-reveal" data-delay="2" data-anim="slide-up">
+          <div class="proj-header" style="--glow-color:#ff4d4d;">
+            <div class="proj-icon"><i class="fas fa-wallet"></i></div>
+            <div class="proj-links">
+              <a href="#" class="view-details-btn" data-project="2"><i class="fas fa-eye"></i></a>
+              <a href="https://github.com/murali-krishna-palla" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>Finora</h3>
+          <p>Personal finance management platform with JWT authentication, analytics dashboard, and transaction management. Built with Chart.js for spending visualization.</p>
+          <div class="proj-tech"><span>React</span><span>Node.js</span><span>MongoDB</span><span>Chart.js</span></div>
+        </div>
+
+        <div class="project-card scroll-reveal" data-delay="3" data-anim="slide-up">
+          <div class="proj-header" style="--glow-color:#06b6d4;">
+            <div class="proj-icon"><i class="fas fa-scale-balanced"></i></div>
+            <div class="proj-links">
+              <a href="#" class="view-details-btn" data-project="3"><i class="fas fa-eye"></i></a>
+              <a href="https://github.com/murali-krishna-palla" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>Nyaya AI</h3>
+          <p>AI-powered legal assistant that simplifies complex legal jargon and provides accessible legal guidance. Helps users understand laws and rights using natural language processing.</p>
+          <div class="proj-tech"><span>React</span><span>Node.js</span><span>Firebase</span><span>Gemini API</span></div>
+        </div>
+
+        <div class="project-card scroll-reveal" data-delay="4" data-anim="slide-up">
+          <div class="proj-header" style="--glow-color:#0ea5e9;">
+            <div class="proj-icon"><i class="fas fa-code-branch"></i></div>
+            <div class="proj-links">
+              <a href="#" class="view-details-btn" data-project="4"><i class="fas fa-eye"></i></a>
+              <a href="https://github.com/murali-krishna-palla" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>GitScope</h3>
+          <p>GitHub profile analyzer that provides deep insights into coding activity, repositories, and development performance. Transforms raw data into meaningful analytics and visualizations.</p>
+          <div class="proj-tech"><span>React</span><span>Node.js</span><span>GitHub API</span><span>Chart.js</span></div>
+        </div>
+
+        <div class="project-card scroll-reveal" data-delay="5" data-anim="slide-up">
+          <div class="proj-header" style="--glow-color:#8b5cf6;">
+            <div class="proj-icon"><i class="fas fa-lock"></i></div>
+            <div class="proj-links">
+              <a href="#" class="view-details-btn" data-project="5"><i class="fas fa-eye"></i></a>
+              <a href="https://github.com/murali-krishna-palla" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>Auth System</h3>
+          <p>Full-stack authentication application with user registration, JWT-based login, protected routes, and profile management. Built with React frontend and Node.js backend.</p>
+          <div class="proj-tech"><span>React</span><span>Node.js</span><span>Express</span><span>JWT</span><span>Tailwind</span></div>
+        </div>
+
+        <div class="project-card scroll-reveal" data-delay="6" data-anim="slide-up">
+          <div class="proj-header" style="--glow-color:#f97316;">
+            <div class="proj-icon"><i class="fas fa-list-check"></i></div>
+            <div class="proj-links">
+              <a href="#" class="view-details-btn" data-project="6"><i class="fas fa-eye"></i></a>
+              <a href="https://github.com/murali-krishna-palla" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>Todo List</h3>
+          <p>Full-stack todo application with add, edit, delete, and mark complete features. Persistent storage with MongoDB and responsive UI built with React and Tailwind CSS.</p>
+          <div class="proj-tech"><span>React</span><span>Node.js</span><span>MongoDB</span><span>Express</span><span>Vite</span></div>
+        </div>
+
+        <div class="project-card scroll-reveal" data-delay="7" data-anim="slide-up">
+          <div class="proj-header" style="--glow-color:#8b5cf6;">
+            <div class="proj-icon"><i class="fas fa-microphone"></i></div>
+            <div class="proj-links">
+              <a href="#" class="view-details-btn" data-project="7"><i class="fas fa-eye"></i></a>
+              <a href="https://github.com/murali-krishna-palla" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          <h3>VocalFlow Web</h3>
+          <p>Voice-first real-time transcription platform with hotkey-driven workflow, AI post-processing, and secure token management. Powers seamless speech-to-text with Deepgram and Groq integration.</p>
+          <div class="proj-tech"><span>React</span><span>Node.js</span><span>WebSocket</span><span>Deepgram API</span><span>MongoDB</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECT DETAILS MODAL ========== -->
+  <div class="project-modal" id="projectModal">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+      <div class="modal-header">
+        <div class="modal-icon" id="modalIcon"></div>
+        <div>
+          <h2 id="modalTitle"></h2>
+          <p class="modal-date" id="modalDate"></p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <h3><i class="fas fa-file-alt"></i> Overview</h3>
+          <p id="modalOverview"></p>
+        </div>
+        <div class="modal-section">
+          <h3><i class="fas fa-star"></i> Key Features</h3>
+          <ul id="modalFeatures"></ul>
+        </div>
+        <div class="modal-section">
+          <h3><i class="fas fa-wrench"></i> Technologies Used</h3>
+          <div class="modal-tech" id="modalTechs"></div>
+        </div>
+        <div class="modal-section">
+          <h3><i class="fas fa-link"></i> Links</h3>
+          <div class="modal-links">
+            <a href="#" id="modalLiveLink" target="_blank" class="modal-link-btn">
+              <i class="fas fa-globe"></i> Live Demo
+            </a>
+            <a href="#" id="modalGitLink" target="_blank" class="modal-link-btn">
+              <i class="fab fa-github"></i> View Code
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CERTIFICATIONS ========== -->
+  <section class="section" id="certs">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">My <span class="neon-text">Certifications</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="cert-grid">
+
+        <div class="cert-card scroll-reveal" data-delay="0" data-anim="slide-up" style="--cert-color:#0ea5e9;">
+          <div class="cert-icon-wrap"><i class="fas fa-brain"></i></div>
+          <div class="cert-name">Artificial Intelligence</div>
+          <div class="cert-issuer">NPTEL - Online Certification</div>
+          <div class="cert-date">Issued: Nov 2023 · Expires Nov 2026</div>
+          <a href="https://drive.google.com/file/d/1o1-20mXocFkVI3KZfJk0hQ6pRXX_zlQ2/view?usp=sharing" target="_blank" class="cert-verify"><i class="fas fa-external-link-alt"></i> Verify</a>
+        </div>
+
+        <div class="cert-card scroll-reveal" data-delay="1" data-anim="slide-up" style="--cert-color:#ff0040;">
+          <div class="cert-icon-wrap"><i class="fas fa-code"></i></div>
+          <div class="cert-name">Java DSA</div>
+          <div class="cert-issuer">NPTEL - Online Certification</div>
+          <div class="cert-date">Issued: Jun 2023 · Expires Jun 2026</div>
+          <a href="https://drive.google.com/file/d/1OSQQtWksy1ey5Q6XHspwNwq16GvNGJuD/view?usp=sharing" target="_blank" class="cert-verify"><i class="fas fa-external-link-alt"></i> Verify</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ACHIEVEMENTS ========== -->
+  <section class="section section-alt" id="achievements">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">Key <span class="neon-text">Achievements</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="achieve-grid">
+        <div class="achieve-card scroll-reveal" data-delay="0">
+          <div class="achieve-icon"><i class="fas fa-medal"></i></div>
+          <div class="achieve-title">GATE 2026 — AIR 9602</div>
+          <div class="achieve-desc">Achieved 9602 All India Rank in GATE 2026 (Computer Science) with score of 472, showcasing strong analytical ability.</div>
+        </div>
+        <div class="achieve-card scroll-reveal" data-delay="1">
+          <div class="achieve-icon"><i class="fas fa-code"></i></div>
+          <div class="achieve-title">200+ LeetCode Problems</div>
+          <div class="achieve-desc">Solved 200+ algorithmic problems across arrays, trees, and dynamic programming on LeetCode.</div>
+        </div>
+        <div class="achieve-card scroll-reveal" data-delay="2">
+          <div class="achieve-icon"><i class="fas fa-brain"></i></div>
+          <div class="achieve-title">Striver A2Z DSA Sheet</div>
+          <div class="achieve-desc">Completed the comprehensive Striver A2Z Data Structures & Algorithms sheet, mastering core DSA concepts.</div>
+        </div>
+        <div class="achieve-card scroll-reveal" data-delay="3">
+          <div class="achieve-icon"><i class="fas fa-certificate"></i></div>
+          <div class="achieve-title">Elite NPTEL Certifications</div>
+          <div class="achieve-desc">Earned Elite NPTEL Certifications in Java DSA (65%) and Artificial Intelligence (68%).</div>
+        </div>
+        <div class="achieve-card scroll-reveal" data-delay="4">
+          <div class="achieve-icon"><i class="fas fa-fire"></i></div>
+          <div class="achieve-title">50-Day Coding Streak</div>
+          <div class="achieve-desc">Maintained a 50-day coding streak and ranked in the top 15% globally on coding platforms.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section class="section section-alt" id="contact">
+    <div class="container">
+      <div class="section-header scroll-reveal">
+        <h2 class="section-title">Get In <span class="neon-text">Touch</span></h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="contact-wrap">
+        <div class="contact-info scroll-reveal" data-delay="0" data-anim="slide-right">
+          <p class="contact-intro">
+            Have a project in mind or want to collaborate?<br/>
+            I'd love to hear from you. Let's build something great together!
+          </p>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+            <div><h4>Email</h4><span>pmuralikrishna520@gmail.com</span></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fas fa-phone"></i></div>
+            <div><h4>Phone</h4><span>+91 9951846255</span></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div><h4>Location</h4><span>Bhimavaram, Andhra Pradesh</span></div>
+          </div>
+          <div class="contact-socials">
+            <a href="https://github.com/murali-krishna-palla"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/murali-krishna-palla-324111312/"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://drive.google.com/file/d/1RyEhmc1w2BXEZekaHzhlp34RjCan_M0f/view?usp=sharing" target="_blank" title="Download Resume"><i class="fas fa-file-download"></i></a>
+          </div>
+        </div>
+        <form class="contact-form scroll-reveal" data-delay="1" data-anim="slide-left" id="contactForm">
+          <div class="field">
+            <input type="text" id="f-name" required placeholder=" " />
+            <label for="f-name">Your Name</label>
+            <div class="field-glow"></div>
+          </div>
+          <div class="field">
+            <input type="email" id="f-email" required placeholder=" " />
+            <label for="f-email">Your Email</label>
+            <div class="field-glow"></div>
+          </div>
+          <div class="field">
+            <input type="text" id="f-subject" required placeholder=" " />
+            <label for="f-subject">Subject</label>
+            <div class="field-glow"></div>
+          </div>
+          <div class="field">
+            <textarea id="f-message" rows="4" required placeholder=" "></textarea>
+            <label for="f-message">Message</label>
+            <div class="field-glow"></div>
+          </div>
+          <button type="submit" class="btn neon-btn btn-full">
+            <span>Send Message</span><i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+      
+      <!-- Share Portfolio Section -->
+      <div class="share-portfolio scroll-reveal" data-delay="2" data-anim="fade">
+        <h3 style="text-align: center; margin-bottom: 24px;">
+          <i class="fas fa-share-alt" style="margin-right: 8px; color: var(--neon);"></i>Share My Portfolio
+        </h3>
+        <p style="text-align: center; color: var(--text-2); margin-bottom: 16px; font-size: 13px;">
+          Share this link with recruiters or collaborators.
+        </p>
+        <div class="share-box">
+          <input type="text" id="portfolioLink" value="https://portofolio-orpin-gamma.vercel.app/" readonly class="share-input" />
+          <button class="btn neon-btn btn-sm" id="copyBtn" style="padding: 10px 16px;">
+            <i class="fas fa-copy"></i><span>Copy Link</span>
+          </button>
+        </div>
+        <div class="share-social" style="margin-top: 20px; display: flex; gap: 12px; justify-content: center;">
+          <a href="#" class="share-icon" id="shareLinkedin" title="Share on LinkedIn" data-platform="linkedin">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" class="share-icon" id="shareEmail" title="Share via Email" data-platform="email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="#home" class="logo"><span class="logo-neon">∞</span> Murali.dev</a>
+      <p>Designed &amp; Built with <i class="fas fa-heart neon-text"></i> &copy; 2026 | <a href="https://portofolio-orpin-gamma.vercel.app/" target="_blank" style="color: var(--neon); text-decoration: none; transition: 0.3s;">View on Vercel ↗</a></p>
+      <a href="#home" class="back-top"><i class="fas fa-arrow-up"></i></a>
+    </div>
+  </footer>
+
+  <!-- EmailJS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
+  <script src="emailjs-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
