@@ -739,25 +739,25 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 .tech-icon {
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
-  width:120px; height:120px; background:var(--bg-card); border:1.5px solid var(--border);
+  width:120px; height:120px; background:var(--bg-card); border:1px solid var(--border);
   border-radius:50%; text-align:center; position:relative; overflow:hidden;
   opacity:1; transform:scale(1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   animation: bubble-float 14s ease-in-out infinite;
-  transition:opacity 0.4s var(--ease), transform 0.4s var(--ease),
-             border-color 0.4s, box-shadow 0.4s, background 0.4s;
+  transition:all 0.4s var(--ease);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 .tech-icon.hidden { opacity:0; transform:scale(0.8); pointer-events:none; position:absolute; animation:none; }
 .tech-icon::after {
   content:''; position:absolute; bottom:0; left:0; right:0;
-  height:2px; background:linear-gradient(90deg,transparent,var(--neon),transparent);
+  height:1px; background:linear-gradient(90deg,transparent,var(--neon),transparent);
   transform:scaleX(0); transition:transform 0.4s var(--ease);
 }
 .tech-icon:hover::after { transform:scaleX(1); }
 .tech-icon i  { font-size:32px; transition:transform 0.4s var(--spring), filter 0.3s; }
 .tech-icon span { font-size:11px; font-weight:500; color:var(--text-3); letter-spacing:0.5px; transition:color 0.3s; }
-.tech-icon:hover { border-color:var(--neon); transform:scale(1.1); box-shadow:0 0 30px var(--neon), 0 0 60px rgba(91,63,184,0.2); background:var(--bg-card-hover); }
-.tech-icon:hover i   { transform:scale(1.2) rotate(-5deg); filter:drop-shadow(0 0 10px var(--neon)); }
+.tech-icon:hover { border-color:var(--neon); transform:scale(1.08) translateY(-6px); box-shadow:0 12px 36px rgba(255,0,64,0.15), inset 0 0 20px rgba(255,0,64,0.05); background:var(--bg-card-hover); }
+.tech-icon:hover i   { transform:scale(1.15) rotate(-6deg); filter:drop-shadow(0 0 8px var(--neon)); }
 .tech-icon:hover span { color:var(--neon); }
 
 .tech-icon:nth-child(3n) { animation-delay: -1.5s; }
