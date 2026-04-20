@@ -782,8 +782,8 @@ document.addEventListener('DOMContentLoaded', () => {
      24. FLOATING ANIMATION FOR ELEMENTS
      ============================================= */
   const floatElements = document.querySelectorAll('.project-card, .exp-card');
-  floatElements.forEach((el, i) => {
-    el.style.animation = `float-bounce ${3 + i * 0.3}s ease-in-out infinite`;
+  floatElements.forEach(el => {
+    el.style.animation = 'float-bounce 8s ease-in-out infinite';
   });
 
   /* =============================================
@@ -804,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cards = document.querySelectorAll('.project-card');
         cards.forEach((card, i) => {
           const cardTop = card.getBoundingClientRect().top;
-          const offset = (window.innerHeight - cardTop) * 0.05;
+          const offset = (window.innerHeight - cardTop) * 0.015;
           card.style.transform = `translateY(${offset}px)`;
         });
 
@@ -833,7 +833,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const children = entry.target.querySelectorAll('.exp-card, .project-card, li');
         children.forEach((child, i) => {
           setTimeout(() => {
-            child.style.animation = 'fadeInUp 0.6s ease forwards';
+            child.style.animation = 'fadeInUp 1s ease-out forwards';
           }, i * 100);
         });
         staggerObserver.unobserve(entry.target);
