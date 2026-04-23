@@ -1106,7 +1106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (portfolioLink) {
     // Keep the portfolio URL from HTML (Vercel link)
-    const portfolioUrl = 'https://portofolio-six-mu-45.vercel.app/';
+    const portfolioUrl = 'https://murali-krishna-palla.github.io/portofolio/';
     portfolioLink.value = portfolioUrl;
 
     // Copy to clipboard
