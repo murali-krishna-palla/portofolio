@@ -2,15 +2,47 @@
    EMAILJS CONTACT FORM HANDLER
    ============================================== */
 
-// Initialize EmailJS with YOUR public key (get from emailjs.com)
-emailjs.init("Nw9kTxHCCrVShjnQ3");
-
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize EmailJS with YOUR public key (get from emailjs.com)
+  if (window.emailjs && typeof window.emailjs.init === 'function') {
+    try {
+      window.emailjs.init("Nw9kTxHCCrVShjnQ3");
+    } catch (err) {
+      console.error('EmailJS init failed:', err);
+    }
+  } else {
+    console.error('EmailJS library not loaded.');
+  }
+
   const contactForm = document.getElementById('contactForm');
   
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      if (!window.emailjs || typeof window.emailjs.send !== 'function') {
+        // Show error toast if EmailJS failed to load
+        const errorToast = document.createElement('div');
+        errorToast.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: #ff4d4d;
+          color: #050001;
+          padding: 16px 24px;
+          border-radius: 8px;
+          font-weight: 600;
+          z-index: 50000;
+          animation: slideIn 0.3s ease-out;
+        `;
+        errorToast.textContent = '✗ Email service not available. Please try again later.';
+        document.body.appendChild(errorToast);
+        setTimeout(() => {
+          errorToast.style.animation = 'slideOut 0.3s ease-out';
+          setTimeout(() => errorToast.remove(), 300);
+        }, 4000);
+        return;
+      }
       
       // Get form values
       const name = document.getElementById('f-name').value.trim();
@@ -21,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Prepare template parameters
       const templateParams = {
         to_email: "pmuralikrishna520@gmail.com", // Your email
+        from_email: email,
+        subject: subject,
         name: name,
         message: message + "\n\nReply to: " + email,
         time: new Date().toLocaleString()

@@ -511,18 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================================
      15. CONTACT FORM
      ============================================= */
-  const form = document.getElementById('contactForm');
-  if (form) {
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const btn = form.querySelector('.btn');
-      const orig = btn.innerHTML;
-      btn.innerHTML = '<span>Message Sent!</span> <i class="fas fa-check"></i>';
-      btn.style.cssText = 'border-color:#ff0040;color:#ff0040;box-shadow:0 0 24px rgba(255,0,64,0.3)';
-      showToast('MESSAGE SENT SUCCESSFULLY ✓');
-      setTimeout(() => { btn.innerHTML = orig; btn.style.cssText = ''; form.reset(); }, 3000);
-    });
-  }
+  // Handled by EmailJS in emailjs-config.js
 
   /* =============================================
      16. PARALLAX GLOWS ON SCROLL
