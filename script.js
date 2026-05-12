@@ -321,15 +321,22 @@ document.addEventListener('DOMContentLoaded', () => {
     navPill.style.top   = ((navLinks.offsetHeight - 32) / 2) + 'px';
   }
 
-  const initActive = document.querySelector('.nav-link.active');
-  if (initActive) setTimeout(() => moveNavPill(initActive), 150);
+
+  // Ensure nav-pill is positioned correctly after DOM load and on resize
+  function updateNavPillToActive() {
+    const current = document.querySelector('.nav-link.active');
+    if (current) moveNavPill(current);
+  }
+
+  // Initial position after DOM load
+  setTimeout(updateNavPillToActive, 150);
+
+  // Update on window resize
+  window.addEventListener('resize', updateNavPillToActive);
 
   links.forEach(link => {
     link.addEventListener('mouseenter', () => moveNavPill(link));
-    link.addEventListener('mouseleave', () => {
-      const current = document.querySelector('.nav-link.active');
-      if (current) moveNavPill(current);
-    });
+    link.addEventListener('mouseleave', updateNavPillToActive);
   });
 
 
