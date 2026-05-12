@@ -1192,6 +1192,16 @@ body.light-mode .contact-item:hover .ci-icon {
   .section-header { margin-bottom:48px; }
   .section-title { font-size:clamp(24px,3.5vw,44px); }
 
+  /* Hide the gradient bar on softskill cards for mobile to fix transparent box */
+  .softskill-card::before {
+    display: none !important;
+  }
+
+  /* Hide nav-pill in mobile/side navigation to fix stuck rectangle */
+  .nav-pill {
+    display: none !important;
+  }
+
 }
 @media (max-width: 768px) {
   .nav-links {
