@@ -104,159 +104,169 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* =============================================
-     3. INTERACTIVE PARTICLE CANVAS (RED/BLUE)
+     3. STATIC GRID BACKGROUND
      ============================================= */
   const canvas = document.getElementById('particleCanvas');
   if (canvas) {
     const ctx = canvas.getContext('2d');
-    let W, H, particles = [];
-    const mouse = { x: -999, y: -999 };
-    const PARTICLE_COUNT  = 90;
-    const CONNECT_DISTANCE = 140;
-    const MOUSE_REPEL     = 120;
+    let W, H;
 
     function resize() {
       W = canvas.width  = window.innerWidth;
       H = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', () => { resize(); initParticles(); });
-    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-
-    class Particle {
-      constructor() { this.reset(true); }
-      reset(init) {
-        this.x     = Math.random() * W;
-        this.y     = init ? Math.random() * H : -10;
-        this.vx    = (Math.random() - 0.5) * 0.4;
-        this.vy    = Math.random() * 0.4 + 0.15;
-        this.r     = Math.random() * 1.5 + 0.5;
-        this.alpha = Math.random() * 0.5 + 0.2;
-        this.pulse = Math.random() * Math.PI * 2;
-      }
-      update() {
-        this.pulse += 0.02;
-        this.alpha = 0.2 + Math.sin(this.pulse) * 0.15;
-
-        const dx   = this.x - mouse.x;
-        const dy   = this.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MOUSE_REPEL) {
-          const force = (MOUSE_REPEL - dist) / MOUSE_REPEL * 0.8;
-          this.vx += (dx / dist) * force;
-          this.vy += (dy / dist) * force;
-        }
-
-        this.vx *= 0.97;
-        this.vy *= 0.97;
-        this.x  += this.vx;
-        this.y  += this.vy;
-
-        if (this.y > H + 10) this.reset(false);
-        if (this.x < -10)    this.x = W + 10;
-        if (this.x > W + 10) this.x = -10;
-      }
-      draw() {
-        const isLightMode = document.body.classList.contains('light-mode');
-        
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        
-        if (isLightMode) {
-          // Dark teal color for light mode background
-          ctx.fillStyle  = `rgba(12, 76, 90, ${this.alpha * 2})`;
-          ctx.shadowColor = '#0c4c5a';
-          ctx.shadowBlur  = 6;
-        } else {
-          // Red neon for dark mode
-          ctx.fillStyle  = `rgba(255, 0, 64, ${this.alpha})`;
-          ctx.shadowColor = '#ff0040';
-          ctx.shadowBlur  = 8;
-        }
-        
-        ctx.fill();
-        ctx.shadowBlur  = 0;
-      }
+      drawGridPattern();
     }
 
-    function initParticles() {
-      particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle());
-    }
-    initParticles();
-
-    function connectParticles() {
-      const isLightMode = document.body.classList.contains('light-mode');
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx   = particles[i].x - particles[j].x;
-          const dy   = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECT_DISTANCE) {
-            const baseAlpha = (1 - dist / CONNECT_DISTANCE) * 0.15;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            
-            if (isLightMode) {
-              // Dark teal lines for light mode
-              ctx.strokeStyle = `rgba(12, 76, 90, ${baseAlpha * 1.5})`;
-              ctx.lineWidth   = 0.9;
-            } else {
-              // Red neon lines for dark mode
-              ctx.strokeStyle = `rgba(255, 0, 64, ${baseAlpha})`;
-              ctx.lineWidth   = 0.6;
-            }
-            
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function animateParticles() {
+    function drawGridPattern() {
       ctx.clearRect(0, 0, W, H);
-      particles.forEach(p => { p.update(); p.draw(); });
-      connectParticles();
-      requestAnimationFrame(animateParticles);
+      const isLightMode = document.body.classList.contains('light-mode');
+      
+      // Grid settings
+      const cellSize = 50;
+      
+      // Static subtle colors
+      let gridColor = isLightMode 
+        ? 'rgba(0, 150, 136, 0.06)' 
+        : 'rgba(255, 0, 64, 0.08)';
+      
+      let blockColor = isLightMode 
+        ? 'rgba(0, 160, 140, 0.12)' 
+        : 'rgba(255, 0, 64, 0.15)';
+      
+      // Draw main grid - thin lines
+      ctx.strokeStyle = gridColor;
+      ctx.lineWidth = 0.8;
+      
+      // Vertical lines
+      for (let x = 0; x < W; x += cellSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      
+      // Horizontal lines
+      for (let y = 0; y < H; y += cellSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+      
+      // Draw stronger accent blocks
+      ctx.strokeStyle = blockColor;
+      ctx.lineWidth = 1.5;
+      
+      // Seed for consistent pattern
+      let seed = 42;
+      function seededRandom() {
+        seed = (seed * 9301 + 49297) % 233280;
+        return seed / 233280;
+      }
+      
+      // Draw accent rectangular blocks
+      for (let row = 0; row < Math.ceil(H / cellSize) + 1; row++) {
+        for (let col = 0; col < Math.ceil(W / cellSize) + 1; col++) {
+          if (seededRandom() > 0.6) continue;
+          
+          const x = col * cellSize;
+          const y = row * cellSize;
+          
+          // Random block size (1-2 cells)
+          const blockWidth = (Math.floor(seededRandom() * 1.8) + 1) * cellSize;
+          const blockHeight = (Math.floor(seededRandom() * 1.8) + 1) * cellSize;
+          
+          // Main block outline
+          ctx.strokeStyle = blockColor;
+          ctx.strokeRect(x, y, blockWidth, blockHeight);
+          
+          // Corner accents (like in design.webp)
+          const cornerLen = Math.min(blockWidth, blockHeight) * 0.15;
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = isLightMode 
+            ? 'rgba(0, 170, 150, 0.15)' 
+            : 'rgba(255, 0, 64, 0.2)';
+          
+          // Top-left corner
+          ctx.beginPath();
+          ctx.moveTo(x, y + cornerLen);
+          ctx.lineTo(x, y);
+          ctx.lineTo(x + cornerLen, y);
+          ctx.stroke();
+          
+          // Top-right corner
+          ctx.beginPath();
+          ctx.moveTo(x + blockWidth - cornerLen, y);
+          ctx.lineTo(x + blockWidth, y);
+          ctx.lineTo(x + blockWidth, y + cornerLen);
+          ctx.stroke();
+          
+          // Bottom-left corner
+          ctx.beginPath();
+          ctx.moveTo(x, y + blockHeight - cornerLen);
+          ctx.lineTo(x, y + blockHeight);
+          ctx.lineTo(x + cornerLen, y + blockHeight);
+          ctx.stroke();
+          
+          // Bottom-right corner
+          ctx.beginPath();
+          ctx.moveTo(x + blockWidth - cornerLen, y + blockHeight);
+          ctx.lineTo(x + blockWidth, y + blockHeight);
+          ctx.lineTo(x + blockWidth, y + blockHeight - cornerLen);
+          ctx.stroke();
+        }
+      }
     }
-    animateParticles();
+
+    resize();
+    window.addEventListener('resize', resize);
   }
 
 
   /* =============================================
-     4. SCROLL PROGRESS BAR
+     4. SCROLL PROGRESS BAR (THROTTLED)
      ============================================= */
   const progressBar = document.getElementById('scrollProgress');
   if (progressBar) {
+    let ticking = false;
     window.addEventListener('scroll', () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      progressBar.style.width = total > 0 ? (window.scrollY / total * 100) + '%' : '0%';
-    });
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const total = document.documentElement.scrollHeight - window.innerHeight;
+          progressBar.style.width = total > 0 ? (window.scrollY / total * 100) + '%' : '0%';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
   }
 
 
   /* =============================================
-     5. CUSTOM CURSOR
+     5. CUSTOM CURSOR (OPTIMIZED)
      ============================================= */
   const cursor = document.getElementById('cursor');
   const trail  = document.getElementById('cursorTrail');
+  const isDesktop = window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024;
 
-  if (window.matchMedia('(pointer: fine)').matches && cursor && trail) {
+  if (isDesktop && cursor && trail) {
     let mx = 0, my = 0, cx = 0, cy = 0, tx = 0, ty = 0;
+    let animating = true;
 
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+    document.addEventListener('mouseleave', () => { animating = false; });
+    document.addEventListener('mouseenter', () => { animating = true; });
 
     function animateCursor() {
-      cx += (mx - cx) * 0.25;
-      cy += (my - cy) * 0.25;
-      cursor.style.left = cx + 'px';
-      cursor.style.top  = cy + 'px';
+      if (animating) {
+        cx += (mx - cx) * 0.25;
+        cy += (my - cy) * 0.25;
+        cursor.style.transform = `translate(${cx}px, ${cy}px)`;
 
-      tx += (mx - tx) * 0.1;
-      ty += (my - ty) * 0.1;
-      trail.style.left = tx + 'px';
-      trail.style.top  = ty + 'px';
-
+        tx += (mx - tx) * 0.1;
+        ty += (my - ty) * 0.1;
+        trail.style.transform = `translate(${tx}px, ${ty}px)`;
+      }
       requestAnimationFrame(animateCursor);
     }
     animateCursor();
@@ -291,20 +301,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Active section highlight
+  // Active section highlight (THROTTLED)
   const sections = document.querySelectorAll('section[id]');
+  let navTicking = false;
   window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY + 200;
-    sections.forEach(sec => {
-      const id   = sec.getAttribute('id');
-      const link = document.querySelector(`.nav-link[href="#${id}"]`);
-      if (link) {
-        const active = scrollY >= sec.offsetTop && scrollY < sec.offsetTop + sec.offsetHeight;
-        link.classList.toggle('active', active);
-        if (active) moveNavPill(link);
-      }
-    });
-  });
+    if (!navTicking) {
+      window.requestAnimationFrame(() => {
+        const scrollY = window.scrollY + 200;
+        sections.forEach(sec => {
+          const id   = sec.getAttribute('id');
+          const link = document.querySelector(`.nav-link[href="#${id}"]`);
+          if (link) {
+            const active = scrollY >= sec.offsetTop && scrollY < sec.offsetTop + sec.offsetHeight;
+            link.classList.toggle('active', active);
+            if (active) moveNavPill(link);
+          }
+        });
+        navTicking = false;
+      });
+      navTicking = true;
+    }
+  }, { passive: true });
 
 
   /* =============================================
@@ -432,6 +449,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const stackGrid = document.querySelector('.stack-icons');
   if (stackGrid) iconObserver.observe(stackGrid);
 
+  /* =============================================
+     11b. GRADE CIRCLE ANIMATION (NEW)
+     ============================================= */
+  const gradeObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.classList.contains('grade-animated')) {
+        entry.target.classList.add('grade-animated');
+        gradeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.grade-progress').forEach(circle => {
+    gradeObserver.observe(circle);
+  });
 
   /* =============================================
      12. TYPING EFFECT

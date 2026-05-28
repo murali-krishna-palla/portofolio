@@ -1051,6 +1051,320 @@ body.light-mode .contact-item:hover .ci-icon {
   background:rgba(255,0,64,0.05); color:var(--neon); border:1px solid rgba(255,0,64,0.1);
 }
 
+/* ===== EDUCATION GRID (NEW) ===== */
+.education-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  padding: 20px 0;
+}
+
+.education-grid::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-1px);
+  background: linear-gradient(to bottom, var(--neon), var(--neon-alt));
+  box-shadow: 0 0 10px var(--neon);
+}
+
+.edu-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0;
+  overflow: hidden;
+  transition: all 0.4s var(--ease);
+  position: relative;
+}
+
+.edu-card:nth-child(2n) {
+  grid-column: 2;
+}
+
+.edu-card:nth-child(2n + 1) {
+  grid-column: 1;
+}
+
+.edu-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 64, 0.03), transparent);
+  transition: left 0.6s var(--ease);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.edu-card:hover::before {
+  left: 100%;
+}
+
+.edu-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--neon-glow);
+  transform: translateY(-4px);
+}
+
+.edu-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 28px;
+  gap: 20px;
+}
+
+.edu-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.edu-logo {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  background: rgba(255, 0, 64, 0.08);
+  border: 1px solid rgba(255, 0, 64, 0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--neon);
+  flex-shrink: 0;
+}
+
+.edu-info-top {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.edu-date {
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--neon);
+  text-shadow: 0 0 6px var(--neon);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.edu-institute {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.edu-grade {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.grade-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  top: 0;
+  left: 0;
+}
+
+.grade-bg {
+  fill: none;
+  stroke: rgba(255, 0, 64, 0.1);
+  stroke-width: 3;
+}
+
+.grade-progress {
+  fill: none;
+  stroke: var(--neon);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 282.7;
+  stroke-dashoffset: 282.7;
+  filter: drop-shadow(0 0 8px var(--neon));
+}
+
+.grade-progress.grade-animated {
+  animation: animateGrade 1.5s var(--ease) forwards;
+}
+
+@keyframes animateGrade {
+  to {
+    stroke-dashoffset: calc(282.7 - (282.7 * var(--progress) / 100));
+  }
+}
+
+.grade-text {
+  position: relative;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--neon);
+  text-shadow: 0 0 10px var(--neon);
+}
+
+.grade-label {
+  position: relative;
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.edu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edu-degree {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.edu-desc {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.edu-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 0, 64, 0.1);
+}
+
+.edu-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+.edu-tags span {
+  padding: 6px 12px;
+  background: rgba(255, 0, 64, 0.08);
+  border: 1px solid rgba(255, 0, 64, 0.2);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--neon);
+  white-space: nowrap;
+  transition: all 0.3s var(--ease);
+}
+
+.edu-tags span:hover {
+  background: rgba(255, 0, 64, 0.15);
+  border-color: var(--neon);
+}
+
+.edu-status {
+  padding: 6px 14px;
+  background: rgba(255, 0, 64, 0.05);
+  border: 1px solid rgba(255, 0, 64, 0.2);
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--neon);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.edu-status.active {
+  background: rgba(255, 0, 64, 0.12);
+  border-color: var(--neon);
+  color: var(--neon);
+  box-shadow: inset 0 0 12px rgba(255, 0, 64, 0.1);
+}
+
+.edu-status.completed {
+  background: rgba(255, 0, 64, 0.05);
+  color: var(--text-2);
+  border-color: rgba(255, 0, 64, 0.15);
+}
+
+/* Responsive Education Grid */
+@media (max-width: 768px) {
+  .education-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .education-grid::before {
+    left: 18px;
+    transform: none;
+  }
+
+  .edu-card {
+    margin-left: 48px;
+  }
+
+  .edu-card:nth-child(2n),
+  .edu-card:nth-child(2n + 1) {
+    grid-column: 1;
+  }
+
+  .edu-header {
+    flex-direction: column;
+  }
+
+  .edu-grade {
+    width: 80px;
+    height: 80px;
+  }
+
+  .grade-text {
+    font-size: 18px;
+  }
+
+  .edu-degree {
+    font-size: 16px;
+  }
+
+  .edu-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .edu-tags {
+    width: 100%;
+  }
+
+  .edu-status {
+    align-self: flex-start;
+  }
+}
+
 /* ===== PROJECTS ===== */
 .project-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
 
@@ -1966,4 +2280,124 @@ a {
   .cert-grid    { grid-template-columns:repeat(2,1fr); }
   .achieve-grid { grid-template-columns:repeat(2,1fr); }
   .coding-profiles-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* Reduce animations on specific devices */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hardware acceleration for animated elements */
+.cursor, .cursor-trail, .profile-img, .neon-text, .hero-title,
+.project-card, .exp-card, .cert-card, .achieve-card, .softskill-card,
+.contact-item, .tl-card, .tech-icon, .about-card {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(0);
+}
+
+/* Optimize animations with content-visibility for off-screen elements */
+.scroll-reveal {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Layout containment for independent components */
+.project-card, .exp-card, .cert-card, .achieve-card, .softskill-card, .about-card, .tech-icon {
+  contain: layout style paint;
+}
+
+/* Reduce paint operations on scroll animations */
+.grid-overlay {
+  translate: unset;
+  transform: none;
+  will-change: unset;
+}
+
+/* Optimize gradient animations */
+.neon-text, .gradient-text {
+  background-attachment: fixed;
+  backface-visibility: hidden;
+}
+
+/* Performance tweaks for hero section */
+.profile-ring, .ring-2 {
+  will-change: transform;
+}
+
+/* Reduce blur filter usage on scroll */
+@media (max-width: 768px) {
+  .project-card, .exp-card, .cert-card, .softskill-card, .about-card {
+    backdrop-filter: blur(8px);
+  }
+  .nav.scrolled {
+    backdrop-filter: blur(16px) saturate(1.2);
+  }
+}
+
+/* Optimize modal performance */
+.modal-content {
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* Efficient font rendering */
+body, .nav-link, .btn, .hero-title, .section-title {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Disable 3D transforms on mobile for better performance */
+@media (max-width: 768px) {
+  .project-card, .exp-card, .cert-card {
+    perspective: none;
+    transform-style: flat;
+  }
+  
+  /* Disable complex animations on mobile */
+  .float-bounce, .float-rotate, @keyframes float-bounce, @keyframes float-rotate {
+    animation: none !important;
+  }
+  
+  .project-card:hover {
+    animation: pulse-glow 1s ease-in-out !important;
+  }
+}
+
+/* Optimize scroll-linked animations */
+.scroll-progress {
+  will-change: width;
+}
+
+/* Reduce shadow complexity on low-end devices */
+@media (max-width: 480px) {
+  .project-card, .exp-card, .cert-card, .softskill-card, .about-card, .tech-icon {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+  }
+}
+
+/* Prefers color scheme optimization */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+  }
 }

@@ -22,9 +22,9 @@
   <meta name="twitter:image" content="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=0a0003" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -173,35 +173,112 @@
         <h2 class="section-title">My <span class="neon-text">Education</span></h2>
         <div class="section-line"></div>
       </div>
-      <div class="timeline">
-        <div class="timeline-item scroll-reveal" data-delay="0" data-anim="slide-right">
-          <div class="tl-dot"><i class="fas fa-graduation-cap"></i></div>
-          <div class="tl-card">
-            <span class="tl-date">2023 — 2027</span>
-            <h3>B.Tech Information Technology</h3>
-            <h4>Vishnu Institute of Technology, Bhimavaram</h4>
-            <p>Currently in 4th year · Focus: Full-Stack Development & AI · GATE 2026: Rank 9602</p>
-            <div class="tl-tags"><span>Data Structures</span><span>Algorithms</span><span>MERN Stack</span><span>AI Systems</span></div>
+      <div class="education-grid">
+        <!-- B.Tech Card -->
+        <div class="edu-card scroll-reveal" data-delay="0" data-anim="slide-up">
+          <div class="edu-card-inner">
+            <div class="edu-header">
+              <div class="edu-logo">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <div class="edu-info-top">
+                <span class="edu-date">2023 — 2027</span>
+                <h3 class="edu-institute">Vishnu Institute of Technology</h3>
+              </div>
+              <div class="edu-grade">
+                <svg class="grade-circle" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" class="grade-bg"></circle>
+                  <circle cx="50" cy="50" r="45" class="grade-progress" style="--progress: 8.2;"></circle>
+                </svg>
+                <span class="grade-text">8.2</span>
+                <span class="grade-label">CGPA</span>
+              </div>
+            </div>
+            <div class="edu-content">
+              <h4 class="edu-degree">B.Tech Information Technology</h4>
+              <p class="edu-desc">Currently in 4th year · Focus: Full-Stack Development & AI · GATE 2026: Rank 9602</p>
+            </div>
+            <div class="edu-footer">
+              <div class="edu-tags">
+                <span>Data Structures</span>
+                <span>Algorithms</span>
+                <span>MERN Stack</span>
+                <span>AI Systems</span>
+              </div>
+              <span class="edu-status active">ACTIVE</span>
+            </div>
           </div>
         </div>
-        <div class="timeline-item scroll-reveal" data-delay="1" data-anim="slide-right">
-          <div class="tl-dot"><i class="fas fa-book"></i></div>
-          <div class="tl-card">
-            <span class="tl-date">2021 — 2023</span>
-            <h3>Class XII (CBSE)</h3>
-            <h4>Sri Prakash Vidya Niketan, Payakaraopeta</h4>
-            <p>Percentage: 74.2% · Strong foundation in Mathematics and Science</p>
-            <div class="tl-tags"><span>Mathematics</span><span>Physics</span><span>Chemistry</span><span>Computer Science</span></div>
+
+        <!-- Class XII Card -->
+        <div class="edu-card scroll-reveal" data-delay="1" data-anim="slide-up">
+          <div class="edu-card-inner">
+            <div class="edu-header">
+              <div class="edu-logo">
+                <i class="fas fa-book"></i>
+              </div>
+              <div class="edu-info-top">
+                <span class="edu-date">2021 — 2023</span>
+                <h3 class="edu-institute">Sri Prakash Vidya Niketan</h3>
+              </div>
+              <div class="edu-grade">
+                <svg class="grade-circle" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" class="grade-bg"></circle>
+                  <circle cx="50" cy="50" r="45" class="grade-progress" style="--progress: 7.42;"></circle>
+                </svg>
+                <span class="grade-text">74.2%</span>
+                <span class="grade-label">SCORE</span>
+              </div>
+            </div>
+            <div class="edu-content">
+              <h4 class="edu-degree">Class XII (CBSE)</h4>
+              <p class="edu-desc">Strong foundation in Mathematics and Science with consistent academic performance</p>
+            </div>
+            <div class="edu-footer">
+              <div class="edu-tags">
+                <span>Mathematics</span>
+                <span>Physics</span>
+                <span>Chemistry</span>
+                <span>Computer Science</span>
+              </div>
+              <span class="edu-status">COMPLETED</span>
+            </div>
           </div>
         </div>
-        <div class="timeline-item scroll-reveal" data-delay="2" data-anim="slide-right">
-          <div class="tl-dot"><i class="fas fa-book"></i></div>
-          <div class="tl-card">
-            <span class="tl-date">2020 — 2021</span>
-            <h3>Class X (CBSE)</h3>
-            <h4>Sri Prakash Vidya Niketan</h4>
-            <p>CGPA: 10.0 · Exceptional performance across all subjects</p>
-            <div class="tl-tags"><span>Mathematics</span><span>Science</span><span>Social Studies</span><span>Languages</span></div>
+
+        <!-- Class X Card -->
+        <div class="edu-card scroll-reveal" data-delay="2" data-anim="slide-up">
+          <div class="edu-card-inner">
+            <div class="edu-header">
+              <div class="edu-logo">
+                <i class="fas fa-book"></i>
+              </div>
+              <div class="edu-info-top">
+                <span class="edu-date">2020 — 2021</span>
+                <h3 class="edu-institute">Sri Prakash Vidya Niketan</h3>
+              </div>
+              <div class="edu-grade">
+                <svg class="grade-circle" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" class="grade-bg"></circle>
+                  <circle cx="50" cy="50" r="45" class="grade-progress" style="--progress: 100;"></circle>
+                </svg>
+                <span class="grade-text">10.0</span>
+                <span class="grade-label">CGPA</span>
+              </div>
+            </div>
+            <div class="edu-content">
+              <h4 class="edu-degree">Class X (CBSE)</h4>
+              <p class="edu-desc">Exceptional performance across all subjects with perfect CGPA score</p>
+            </div>
+            <div class="edu-footer">
+              <div class="edu-tags">
+                <span>Mathematics</span>
+                <span>Science</span>
+                <span>Social Studies</span>
+                <span>Languages</span>
+              </div>
+              <span class="edu-status completed">COMPLETED</span>
+            </div>
           </div>
         </div>
       </div>
