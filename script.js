@@ -568,16 +568,17 @@ document.addEventListener('DOMContentLoaded', () => {
      19. SIDEBAR SECTION DOTS
      ============================================= */
   const sectionIds = [
-    { id: 'home',         label: 'Home' },
-    { id: 'about',        label: 'About' },
-    { id: 'skills',       label: 'Skills' },
-    { id: 'softskills',   label: 'Soft Skills' },
-    { id: 'experience',   label: 'Experience' },
-    { id: 'education',    label: 'Education' },
-    { id: 'projects',     label: 'Projects' },
-    { id: 'certs',        label: 'Certs' },
-    { id: 'achievements', label: 'Awards' },
-    { id: 'contact',      label: 'Contact' },
+    { id: 'home',            label: 'Home' },
+    { id: 'about',           label: 'About' },
+    { id: 'skills',          label: 'Skills' },
+    { id: 'softskills',      label: 'Soft Skills' },
+    { id: 'experience',      label: 'Experience' },
+    { id: 'education',       label: 'Education' },
+    { id: 'projects',        label: 'Projects' },
+    { id: 'certs',           label: 'Certs' },
+    { id: 'achievements',    label: 'Awards' },
+    { id: 'codingprofiles',  label: 'Coding' },
+    { id: 'contact',         label: 'Contact' },
   ];
 
   const dotsContainer = document.createElement('div');
