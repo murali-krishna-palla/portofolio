@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gradeObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
 
   document.querySelectorAll('.grade-progress').forEach(circle => {
     gradeObserver.observe(circle);

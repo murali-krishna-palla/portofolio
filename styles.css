@@ -18,10 +18,10 @@
   --bg-card-hover: rgba(22, 0, 5, 0.7);
   --glass: rgba(13, 0, 3, 0.56);
 
-  /* Text — Improved contrast for visibility */
-  --text: #eed8dc;
-  --text-2: #d4a8b4;
-  --text-3: #a87a8f;
+  /* Text — Bright for maximum readability */
+  --text: #f5e8ea;
+  --text-2: #e8c4cc;
+  --text-3: #c99aaa;
 
   /* Borders */
   --border: rgba(255, 0, 64, 0.07);
@@ -148,10 +148,10 @@ img { max-width: 100%; display: block; }
 }
 @keyframes gridPulse { 0%,100%{opacity:1} 50%{opacity:0.45} }
 
-.glow { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.14; will-change: transform; animation: float 14s ease-in-out infinite alternate; }
-.glow-1 { width:500px;height:500px; background: var(--neon); top:-15%;right:-10%; }
-.glow-2 { width:400px;height:400px; background: var(--neon-alt); bottom:-10%;left:-5%; animation-delay:-7s; }
-.glow-3 { width:300px;height:300px; background: var(--neon-orange); top:40%;left:50%; animation-delay:-14s; }
+.glow { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.08; will-change: transform; animation: float 14s ease-in-out infinite alternate; }
+.glow-1 { width:320px;height:320px; background: var(--neon); top:-10%;right:-5%; }
+.glow-2 { width:260px;height:260px; background: var(--neon-alt); bottom:-8%;left:-3%; animation-delay:-7s; }
+.glow-3 { width:200px;height:200px; background: var(--neon-orange); top:40%;left:50%; animation-delay:-14s; }
 
 @keyframes float {
   0%   { transform: translate(0,0) scale(1); }
@@ -382,7 +382,8 @@ body.light-mode .contact-item:hover .ci-icon {
 /* ===== HERO ===== */
 .hero {
   min-height:100vh; position:relative; z-index:1;
-  display:flex; align-items:center; padding:120px 24px 60px;
+  display:flex; align-items:center; padding:120px 24px 80px;
+  overflow: visible;
 }
 .hero-container {
   max-width:var(--max-w); margin:0 auto; width:100%;
@@ -605,7 +606,7 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 /* ===== PROFILE ===== */
-.hero-right { display:flex; justify-content:center; }
+.hero-right { display:flex; justify-content:center; padding: 40px 0; overflow: visible; }
 .profile-wrapper { position:relative; width:300px; height:300px; }
 .profile-ring {
   position:absolute; inset:-12px; border-radius:50%;
@@ -614,6 +615,7 @@ body.light-mode .contact-item:hover .ci-icon {
   border-right-color:var(--neon-orange);
   animation:ring-spin 2s linear infinite;
   filter:drop-shadow(0 0 8px var(--neon));
+  pointer-events: none;
 }
 .ring-2 {
   inset:-24px;
@@ -623,13 +625,15 @@ body.light-mode .contact-item:hover .ci-icon {
   animation:ring-spin 3s linear infinite reverse;
   filter:drop-shadow(0 0 6px var(--neon-alt));
   opacity:0.4;
+  pointer-events: none;
 }
 @keyframes ring-spin { to{transform:rotate(360deg)} }
 .profile-img {
-  width:100%;height:100%; border-radius:50%; object-fit:cover; object-position:center 20%;
+  width:100%;height:100%; border-radius:50%; object-fit:cover; object-position:center 30%;
   background:var(--bg-card); border:3px solid rgba(255,0,64,0.18);
   box-shadow:0 0 40px rgba(255,0,64,0.15), inset 0 0 30px rgba(255,0,64,0.06);
   animation:profilePulse 4s ease-in-out infinite;
+  display:block;
 }
 @keyframes profilePulse {
   0%,100%{ box-shadow:0 0 40px rgba(255,0,64,0.15),inset 0 0 30px rgba(255,0,64,0.06); }
@@ -1313,56 +1317,78 @@ body.light-mode .contact-item:hover .ci-icon {
   border-color: rgba(255, 0, 64, 0.15);
 }
 
-/* Responsive Education Grid */
+/* ===== EDUCATION TIMELINE (matches experience style) ===== */
+.edu-timeline { max-width:900px; margin:0 auto; position:relative; }
+.edu-timeline::before {
+  content:''; position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-1px);
+  background:linear-gradient(to bottom,var(--neon),var(--neon-alt));
+  box-shadow:0 0 10px var(--neon);
+}
+.edu-timeline-item { position:relative; margin-bottom:40px; width:48%; }
+.edu-timeline-item[data-position="left"] { margin-left:0; margin-right:auto; }
+.edu-timeline-item[data-position="right"] { margin-left:auto; margin-right:0; }
+
+.edu-tl-dot {
+  position:absolute; top:24px; width:32px; height:32px;
+  border-radius:50%; background:var(--bg); border:2px solid var(--neon);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1; transition:all 0.3s var(--ease); font-size:12px; color:var(--neon);
+  box-shadow:0 0 12px rgba(255,0,64,0.2);
+}
+.edu-timeline-item[data-position="left"] .edu-tl-dot { right:-60px; }
+.edu-timeline-item[data-position="right"] .edu-tl-dot { left:-60px; }
+.edu-timeline-item:hover .edu-tl-dot { background:var(--neon); color:var(--bg); box-shadow:0 0 24px var(--neon); transform:scale(1.2); }
+
+.edu-tl-card {
+  padding:28px; background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); transition:all 0.4s var(--ease); position:relative; overflow:hidden;
+  backdrop-filter:blur(12px);
+}
+.edu-tl-card::before {
+  content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,0,64,0.04),transparent);
+  transition:left 0.6s var(--ease); pointer-events:none;
+}
+.edu-tl-card:hover::before { left:100%; }
+.edu-tl-card:hover { border-color:var(--border-hover); box-shadow:var(--neon-glow); transform:translateX(6px); }
+.edu-timeline-item[data-position="right"] .edu-tl-card:hover { transform:translateX(-6px); }
+
+.edu-tl-header {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:16px; gap:16px;
+}
+.edu-tl-meta {
+  display:flex; flex-direction:column; gap:8px;
+}
+
+.edu-tl-card h3 {
+  font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700;
+  color:var(--text); margin:0 0 6px 0;
+  line-height:1.3;
+}
+.edu-tl-card h4 {
+  font-size:14px; font-weight:500; color:var(--neon-light); margin:0 0 12px 0;
+}
+.edu-tl-card p {
+  font-size:13px; color:var(--text-2); line-height:1.75; margin:0 0 16px 0;
+}
+.edu-tl-tags { display:flex; flex-wrap:wrap; gap:6px; }
+.edu-tl-tags span {
+  padding:4px 12px; border-radius:100px; font-size:11px; font-weight:500;
+  background:rgba(255,0,64,0.06); color:var(--neon); border:1px solid rgba(255,0,64,0.15);
+  transition:all 0.3s var(--ease);
+}
+.edu-tl-tags span:hover { background:rgba(255,0,64,0.14); border-color:var(--neon); }
+
+/* Responsive Education Timeline */
 @media (max-width: 768px) {
-  .education-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .education-grid::before {
-    left: 18px;
-    transform: none;
-  }
-
-  .edu-card {
-    margin-left: 48px;
-  }
-
-  .edu-card:nth-child(2n),
-  .edu-card:nth-child(2n + 1) {
-    grid-column: 1;
-  }
-
-  .edu-header {
-    flex-direction: column;
-  }
-
-  .edu-grade {
-    width: 80px;
-    height: 80px;
-  }
-
-  .grade-text {
-    font-size: 18px;
-  }
-
-  .edu-degree {
-    font-size: 16px;
-  }
-
-  .edu-footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .edu-tags {
-    width: 100%;
-  }
-
-  .edu-status {
-    align-self: flex-start;
-  }
+  .edu-timeline::before { left:18px; transform:none; }
+  .edu-timeline-item { width:100%; margin-left:0 !important; margin-right:0 !important; padding-left:52px; }
+  .edu-timeline-item .edu-tl-dot { right:auto !important; left:-40px !important; }
+  .edu-tl-card:hover { transform:translateX(4px) !important; }
+  .edu-tl-header { flex-direction:column; gap:12px; }
+  .edu-grade { width:75px; height:75px; }
+  .grade-text { font-size:16px; }
 }
 
 /* ===== PROJECTS ===== */
@@ -1797,7 +1823,7 @@ body.light-mode .contact-item:hover .ci-icon {
   .section-header { margin-bottom:32px; }
   .section-title { font-size:clamp(20px,4vw,28px); }
   .section-line { width:30px; }
-  .hero { padding:100px 16px 40px; }
+  .hero { padding:100px 16px 60px; }
   .hero-title { font-size:clamp(32px,8vw,48px); }
   .hero-desc { font-size:14px; }
   .hero-btns { flex-direction:column; gap:10px; }
@@ -2304,15 +2330,9 @@ a {
   transform: translateZ(0);
 }
 
-/* Optimize animations with content-visibility for off-screen elements */
-.scroll-reveal {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 500px;
-}
-
-/* Layout containment for independent components */
+/* Layout containment for independent components — only style containment, not layout/paint */
 .project-card, .exp-card, .cert-card, .achieve-card, .softskill-card, .about-card, .tech-icon {
-  contain: layout style paint;
+  contain: style;
 }
 
 /* Reduce paint operations on scroll animations */
