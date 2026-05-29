@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.getElementById('themeToggle');
   const htmlEl = document.documentElement;
   const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
-  
+
   function setTheme(theme) {
     if (theme === 'light') {
       document.body.classList.add('light-mode');
@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     localStorage.setItem('portfolio-theme', theme);
   }
-  
+
   setTheme(savedTheme);
-  
+
   if (themeToggle) {
     themeToggle.addEventListener('click', () => {
       const currentTheme = localStorage.getItem('portfolio-theme') || 'dark';
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let W, H;
 
     function resize() {
-      W = canvas.width  = window.innerWidth;
+      W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
       drawGridPattern();
     }
@@ -120,23 +120,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawGridPattern() {
       ctx.clearRect(0, 0, W, H);
       const isLightMode = document.body.classList.contains('light-mode');
-      
+
       // Grid settings
       const cellSize = 50;
-      
+
       // Static subtle colors
-      let gridColor = isLightMode 
-        ? 'rgba(0, 150, 136, 0.06)' 
+      let gridColor = isLightMode
+        ? 'rgba(0, 150, 136, 0.06)'
         : 'rgba(255, 0, 64, 0.08)';
-      
-      let blockColor = isLightMode 
-        ? 'rgba(0, 160, 140, 0.12)' 
+
+      let blockColor = isLightMode
+        ? 'rgba(0, 160, 140, 0.12)'
         : 'rgba(255, 0, 64, 0.15)';
-      
+
       // Draw main grid - thin lines
       ctx.strokeStyle = gridColor;
       ctx.lineWidth = 0.8;
-      
+
       // Vertical lines
       for (let x = 0; x < W; x += cellSize) {
         ctx.beginPath();
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineTo(x, H);
         ctx.stroke();
       }
-      
+
       // Horizontal lines
       for (let y = 0; y < H; y += cellSize) {
         ctx.beginPath();
@@ -152,62 +152,62 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineTo(W, y);
         ctx.stroke();
       }
-      
+
       // Draw stronger accent blocks
       ctx.strokeStyle = blockColor;
       ctx.lineWidth = 1.5;
-      
+
       // Seed for consistent pattern
       let seed = 42;
       function seededRandom() {
         seed = (seed * 9301 + 49297) % 233280;
         return seed / 233280;
       }
-      
+
       // Draw accent rectangular blocks
       for (let row = 0; row < Math.ceil(H / cellSize) + 1; row++) {
         for (let col = 0; col < Math.ceil(W / cellSize) + 1; col++) {
           if (seededRandom() > 0.6) continue;
-          
+
           const x = col * cellSize;
           const y = row * cellSize;
-          
+
           // Random block size (1-2 cells)
           const blockWidth = (Math.floor(seededRandom() * 1.8) + 1) * cellSize;
           const blockHeight = (Math.floor(seededRandom() * 1.8) + 1) * cellSize;
-          
+
           // Main block outline
           ctx.strokeStyle = blockColor;
           ctx.strokeRect(x, y, blockWidth, blockHeight);
-          
+
           // Corner accents (like in design.webp)
           const cornerLen = Math.min(blockWidth, blockHeight) * 0.15;
           ctx.lineWidth = 1;
-          ctx.strokeStyle = isLightMode 
-            ? 'rgba(0, 170, 150, 0.15)' 
+          ctx.strokeStyle = isLightMode
+            ? 'rgba(0, 170, 150, 0.15)'
             : 'rgba(255, 0, 64, 0.2)';
-          
+
           // Top-left corner
           ctx.beginPath();
           ctx.moveTo(x, y + cornerLen);
           ctx.lineTo(x, y);
           ctx.lineTo(x + cornerLen, y);
           ctx.stroke();
-          
+
           // Top-right corner
           ctx.beginPath();
           ctx.moveTo(x + blockWidth - cornerLen, y);
           ctx.lineTo(x + blockWidth, y);
           ctx.lineTo(x + blockWidth, y + cornerLen);
           ctx.stroke();
-          
+
           // Bottom-left corner
           ctx.beginPath();
           ctx.moveTo(x, y + blockHeight - cornerLen);
           ctx.lineTo(x, y + blockHeight);
           ctx.lineTo(x + cornerLen, y + blockHeight);
           ctx.stroke();
-          
+
           // Bottom-right corner
           ctx.beginPath();
           ctx.moveTo(x + blockWidth - cornerLen, y + blockHeight);
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
      5. CUSTOM CURSOR (OPTIMIZED)
      ============================================= */
   const cursor = document.getElementById('cursor');
-  const trail  = document.getElementById('cursorTrail');
+  const trail = document.getElementById('cursorTrail');
   const isDesktop = window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024;
 
   if (isDesktop && cursor && trail) {
@@ -281,10 +281,10 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================================
      6. NAV SCROLL + HAMBURGER
      ============================================= */
-  const nav       = document.getElementById('nav');
+  const nav = document.getElementById('nav');
   const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.getElementById('navLinks');
-  const links     = document.querySelectorAll('.nav-link');
+  const navLinks = document.getElementById('navLinks');
+  const links = document.querySelectorAll('.nav-link');
 
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 50);
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window.requestAnimationFrame(() => {
         const scrollY = window.scrollY + 200;
         sections.forEach(sec => {
-          const id   = sec.getAttribute('id');
+          const id = sec.getAttribute('id');
           const link = document.querySelector(`.nav-link[href="#${id}"]`);
           if (link) {
             const active = scrollY >= sec.offsetTop && scrollY < sec.offsetTop + sec.offsetHeight;
@@ -332,10 +332,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function moveNavPill(activeLink) {
     if (!navPill || !activeLink || !navLinks) return;
     const parentRect = navLinks.getBoundingClientRect();
-    const linkRect   = activeLink.getBoundingClientRect();
-    navPill.style.left  = (linkRect.left - parentRect.left) + 'px';
+    const linkRect = activeLink.getBoundingClientRect();
+    navPill.style.left = (linkRect.left - parentRect.left) + 'px';
     navPill.style.width = linkRect.width + 'px';
-    navPill.style.top   = ((navLinks.offsetHeight - 32) / 2) + 'px';
+    navPill.style.top = ((navLinks.offsetHeight - 32) / 2) + 'px';
   }
 
 
@@ -504,8 +504,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function animateCounters() {
     document.querySelectorAll('.num[data-count]').forEach(el => {
       const target = parseInt(el.dataset.count);
-      const start  = performance.now();
-      const tick   = now => {
+      const start = performance.now();
+      const tick = now => {
         const p = Math.min((now - start) / 1800, 1);
         el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
         if (p < 1) requestAnimationFrame(tick);
@@ -532,19 +532,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll(selector).forEach(card => {
       card.addEventListener('mousemove', e => {
         const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width  - 0.5;
-        const y = (e.clientY - rect.top)  / rect.height - 0.5;
-        card.style.transform = `perspective(700px) rotateY(${x*rx}deg) rotateX(${-y*ry}deg) translateY(-${ty}px)`;
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transition = 'none';
+        card.style.transform = `perspective(700px) rotateY(${x * rx}deg) rotateX(${-y * ry}deg) translateY(-${ty}px)`;
       });
-      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.5s var(--ease), box-shadow 0.5s var(--ease)';
+        card.style.transform = '';
+      });
     });
   }
 
-  addTilt('.tech-icon',    12, 12, 6);
-  addTilt('.project-card',  6,  6, 8);
-  addTilt('.cert-card',     8,  8, 6);
-  addTilt('.exp-card',      5,  5, 4);
-  addTilt('.achieve-card',  8,  8, 6);
+  addTilt('.tech-icon', 12, 12, 6);
+  addTilt('.project-card', 6, 6, 8);
+  addTilt('.cert-card', 8, 8, 6);
+  addTilt('.exp-card', 5, 5, 4);
+  addTilt('.achieve-card', 8, 8, 6);
 
 
   /* =============================================
@@ -560,7 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', () => {
     if (!scrollTick) {
       requestAnimationFrame(() => {
-        glows.forEach((g, i) => { g.style.transform = `translateY(${window.scrollY * (i+1) * 0.018}px)`; });
+        glows.forEach((g, i) => { g.style.transform = `translateY(${window.scrollY * (i + 1) * 0.018}px)`; });
         scrollTick = false;
       });
       scrollTick = true;
@@ -574,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.social-icon, .contact-socials a, .back-top').forEach(el => {
     el.addEventListener('mousemove', e => {
       const rect = el.getBoundingClientRect();
-      el.style.transform = `translate(${(e.clientX - rect.left - rect.width/2)*0.28}px, ${(e.clientY - rect.top - rect.height/2)*0.28}px)`;
+      el.style.transform = `translate(${(e.clientX - rect.left - rect.width / 2) * 0.28}px, ${(e.clientY - rect.top - rect.height / 2) * 0.28}px)`;
     });
     el.addEventListener('mouseleave', () => { el.style.transform = ''; });
   });
@@ -600,17 +604,17 @@ document.addEventListener('DOMContentLoaded', () => {
      19. SIDEBAR SECTION DOTS
      ============================================= */
   const sectionIds = [
-    { id: 'home',            label: 'Home' },
-    { id: 'about',           label: 'About' },
-    { id: 'skills',          label: 'Skills' },
-    { id: 'softskills',      label: 'Soft Skills' },
-    { id: 'experience',      label: 'Experience' },
-    { id: 'education',       label: 'Education' },
-    { id: 'projects',        label: 'Projects' },
-    { id: 'certs',           label: 'Certs' },
-    { id: 'achievements',    label: 'Awards' },
-    { id: 'codingprofiles',  label: 'Coding' },
-    { id: 'contact',         label: 'Contact' },
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'softskills', label: 'Soft Skills' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'education', label: 'Education' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'certs', label: 'Certs' },
+    { id: 'achievements', label: 'Awards' },
+    { id: 'codingprofiles', label: 'Coding' },
+    { id: 'contact', label: 'Contact' },
   ];
 
   const dotsContainer = document.createElement('div');
@@ -650,13 +654,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.cert-card').forEach(card => {
     card.addEventListener('click', e => {
       const ripple = document.createElement('span');
-      const rect   = card.getBoundingClientRect();
-      const size   = Math.max(rect.width, rect.height);
+      const rect = card.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
       ripple.style.cssText = `
         position:absolute;
         width:${size}px;height:${size}px;
-        left:${e.clientX - rect.left - size/2}px;
-        top:${e.clientY - rect.top - size/2}px;
+        left:${e.clientX - rect.left - size / 2}px;
+        top:${e.clientY - rect.top - size / 2}px;
         background:rgba(255,0,64,0.1);
         border-radius:50%;
         transform:scale(0);
@@ -680,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* =============================================
      21. KONAMI CODE EASTER EGG 🎮 (RED MATRIX)
      ============================================= */
-  const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
   let konamiIdx = 0;
 
   document.addEventListener('keydown', e => {
@@ -715,10 +719,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(overlay);
     requestAnimationFrame(() => overlay.classList.add('active'));
 
-    matrixCanvas.width  = window.innerWidth;
+    matrixCanvas.width = window.innerWidth;
     matrixCanvas.height = window.innerHeight;
-    const mCtx  = matrixCanvas.getContext('2d');
-    const cols  = Math.floor(window.innerWidth / 16);
+    const mCtx = matrixCanvas.getContext('2d');
+    const cols = Math.floor(window.innerWidth / 16);
     const drops = Array(cols).fill(1);
     const matChars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF</>{}[]⚡';
 
@@ -731,9 +735,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const ch = matChars[Math.floor(Math.random() * matChars.length)];
         mCtx.fillStyle = Math.random() > 0.95 ? '#ff4d4d' : 'rgba(255,0,64,0.7)';
         mCtx.shadowColor = '#ff0040';
-        mCtx.shadowBlur  = 4;
+        mCtx.shadowBlur = 4;
         mCtx.fillText(ch, i * 16, y * 16);
-        mCtx.shadowBlur  = 0;
+        mCtx.shadowBlur = 0;
         if (y * 16 > matrixCanvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       });
@@ -771,7 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
               counter.textContent = target;
             }
           };
-          
+
           if (counter.textContent === '0') countUp();
         });
         counterObserver.unobserve(entry.target);
@@ -783,60 +787,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (aboutGridSection) counterObserver.observe(aboutGridSection);
 
   /* =============================================
-     23. 3D TILT CARD EFFECT
-     ============================================= */
-  const tiltCards = document.querySelectorAll('.project-card, .exp-card');
-  
-  tiltCards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      
-      const rotateY = (x - centerX) / 10;
-      const rotateX = (centerY - y) / 10;
-      
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-    });
-    
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-    });
-  });
-
-  /* =============================================
-     24. FLOATING ANIMATION FOR ELEMENTS
-     ============================================= */
-  const floatElements = document.querySelectorAll('.project-card, .exp-card');
-  floatElements.forEach(el => {
-    el.style.animation = 'float-bounce 8s ease-in-out infinite';
-  });
-
-  /* =============================================
-     25. ENHANCED PARALLAX EFFECT
+     23. ENHANCED PARALLAX EFFECT FOR GLOWS
      ============================================= */
   let parallaxTicking = false;
-  
+
   window.addEventListener('scroll', () => {
     if (!parallaxTicking) {
       requestAnimationFrame(() => {
-        // Parallax for background glows
         const scrollY = window.scrollY;
         glows.forEach((g, i) => {
           g.style.transform = `translateY(${scrollY * (i + 1) * 0.03}px) scale(${1 + scrollY * 0.0001})`;
         });
-
-        // Parallax for cards
-        const cards = document.querySelectorAll('.project-card');
-        cards.forEach((card, i) => {
-          const cardTop = card.getBoundingClientRect().top;
-          const offset = (window.innerHeight - cardTop) * 0.015;
-          card.style.transform = `translateY(${offset}px)`;
-        });
-
         parallaxTicking = false;
       });
       parallaxTicking = true;
@@ -844,34 +805,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* =============================================
-     26. GRADIENT TEXT ANIMATION ON TITLES
+     24. GRADIENT TEXT ANIMATION ON TITLES
      ============================================= */
   const gradientTexts = document.querySelectorAll('.gradient-text, h1, h2, h3');
   gradientTexts.forEach((text, i) => {
     if (Math.random() > 0.5) {
       text.classList.add('gradient-text');
     }
-  });
-
-  /* =============================================
-     27. STAGGERED ELEMENT ENTRANCE
-     ============================================= */
-  const staggerObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const children = entry.target.querySelectorAll('.exp-card, .project-card, li');
-        children.forEach((child, i) => {
-          setTimeout(() => {
-            child.style.animation = 'fadeInUp 1s ease-out forwards';
-          }, i * 100);
-        });
-        staggerObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.experience-list, .projects-container, .skills-list').forEach(el => {
-    staggerObserver.observe(el);
   });
 
   /* =============================================
@@ -1088,7 +1028,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Links
         const modalLiveLink = document.getElementById('modalLiveLink');
         const modalGitLink = document.getElementById('modalGitLink');
-        
+
         if (project.liveLink === '#') {
           modalLiveLink.style.display = 'none';
         } else {
@@ -1099,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(project.liveLink, '_blank');
           };
         }
-        
+
         modalGitLink.href = project.gitLink;
         modalGitLink.onclick = (e) => {
           e.preventDefault();
@@ -1128,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   closeModal.addEventListener('click', closeProjectModal);
   modalOverlay.addEventListener('click', closeProjectModal);
-  
+
   // Close on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && projectModal.classList.contains('active')) {
