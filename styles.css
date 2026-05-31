@@ -2959,6 +2959,7 @@ body.light-mode .contact-item:hover .ci-icon {
   color: var(--neon);
   background: rgba(255, 0, 64, 0.04);
   transition: all 0.3s var(--spring);
+  margin-top: auto;
 }
 
 .cert-card:hover .cert-verify {
@@ -3362,6 +3363,10 @@ body.light-mode .contact-item:hover .ci-icon {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .cert-card {
+    max-width: 100%;
+  }
+
   .achieve-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -3497,6 +3502,10 @@ body.light-mode .contact-item:hover .ci-icon {
 
   .cert-grid {
     grid-template-columns: 1fr;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
   }
 
   .achieve-grid {
