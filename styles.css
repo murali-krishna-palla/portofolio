@@ -115,8 +115,9 @@ body {
   line-height: 1.65;
   overflow-x: hidden;
   cursor: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 a {
   text-decoration: none;
@@ -709,15 +710,16 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 @keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
 
-  0%,
-  100% {
-    opacity: 1
-  }
-
-  50% {
-    opacity: 0
-  }
+.typed-cursor {
+  color: var(--neon);
+  font-weight: 400;
+  animation: cursor-blink 0.8s ease-in-out infinite;
+  margin-left: 2px;
+  text-shadow: 0 0 10px rgba(255, 0, 64, 0.6);
 }
 
 .hero-profession {
@@ -771,6 +773,29 @@ body.light-mode .contact-item:hover .ci-icon {
   will-change: transform, box-shadow;
 }
 
+/* Button ripple effect */
+.btn .btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: rgba(255, 255, 255, 0.25);
+  animation: btnRipple 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(255, 0, 64, 0.3);
+}
+
+@keyframes btnRipple {
+  to { 
+    transform: scale(4.5); 
+    opacity: 0; 
+  }
+}
+
+.btn:active {
+  transform: scale(0.96);
+  transition: all 0.15s cubic-bezier(0.4, 0, 1, 1);
+}
+
 .neon-btn {
   background: transparent;
   color: var(--neon);
@@ -801,9 +826,10 @@ body.light-mode .contact-item:hover .ci-icon {
 
 .neon-btn:hover {
   transform: translateY(-4px);
-  box-shadow: 0 0 40px rgba(255, 0, 64, 0.35), 0 12px 32px rgba(0, 0, 0, 0.5);
-  text-shadow: 0 0 12px var(--neon);
+  box-shadow: 0 0 40px rgba(255, 0, 64, 0.4), 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 0, 64, 0.08);
+  text-shadow: 0 0 16px var(--neon);
   border-color: var(--neon-light);
+  background: rgba(255, 0, 64, 0.04);
 }
 
 .neon-btn:hover::before {
@@ -826,10 +852,10 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 .ghost-btn:hover {
-  border-color: rgba(255, 0, 64, 0.4);
-  background: rgba(255, 0, 64, 0.06);
+  border-color: rgba(255, 0, 64, 0.5);
+  background: rgba(255, 0, 64, 0.08);
   transform: translateY(-4px);
-  box-shadow: 0 8px 28px rgba(255, 0, 64, 0.12);
+  box-shadow: 0 12px 32px rgba(255, 0, 64, 0.15), inset 0 0 16px rgba(255, 0, 64, 0.03);
   color: var(--neon);
 }
 
@@ -1089,11 +1115,17 @@ body.light-mode .contact-item:hover .ci-icon {
   padding: 120px 0;
   position: relative;
   z-index: 1;
+  /* Skip rendering off-screen sections entirely — biggest scroll perf win */
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px; /* estimated height so layout doesn't shift */
 }
 
 .section-alt {
   background: rgba(25, 0, 5, 0.35);
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
 }
+
 
 .section-header {
   text-align: center;
@@ -1328,38 +1360,58 @@ body.light-mode .contact-item:hover .ci-icon {
   animation: gradient-shift 4s ease infinite;
 }
 
-/* ===== SCROLL REVEAL ===== */
+/* ===== SCROLL REVEAL — GPU-only (opacity + transform) ===== */
+/*
+ * PERFORMANCE NOTE:
+ * Only opacity and transform are GPU-composited (compositor thread).
+ * filter:blur, backdrop-filter, color, etc. trigger paint on every frame → jank.
+ * We ONLY animate opacity + transform for buttery smooth scroll.
+ */
 .scroll-reveal {
   opacity: 0;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: calc(var(--d, 0) * 0.1s);
+  /* No filter, no color, no shadow — only compositor properties */
+  transition:
+    opacity   0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--d, 0) * 120ms);
   will-change: opacity, transform;
+  /* Force GPU layer creation from the start to avoid layer promotion cost during animation */
+  transform: translateZ(0) translateY(36px);
 }
 
 .scroll-reveal[data-anim="slide-right"] {
-  transform: translateX(-30px);
+  transform: translateZ(0) translateX(-48px);
 }
 
 .scroll-reveal[data-anim="slide-left"] {
-  transform: translateX(30px);
+  transform: translateZ(0) translateX(48px);
 }
 
 .scroll-reveal[data-anim="slide-up"] {
-  transform: translateY(30px);
+  transform: translateZ(0) translateY(44px);
 }
 
 .scroll-reveal[data-anim="scale"] {
-  transform: scale(0.92);
+  transform: translateZ(0) scale(0.84);
+  opacity: 0.6;
+  /* No blur — scale alone is GPU-composited */
+}
+
+.scroll-reveal[data-anim="fade"] {
+  transform: translateZ(0);
 }
 
 .scroll-reveal:not([data-anim]) {
-  transform: translateY(20px);
+  transform: translateZ(0) translateY(36px);
 }
 
+/* Visible state — everything returns to identity transform (GPU composited) */
 .scroll-reveal.visible {
   opacity: 1;
-  transform: translateX(0) translateY(0) scale(1);
+  transform: translateZ(0) translateX(0) translateY(0) scale(1);
+  filter: brightness(1);
 }
+
 
 /* ===== ABOUT ===== */
 .about-grid {
@@ -1377,7 +1429,7 @@ body.light-mode .contact-item:hover .ci-icon {
   transition: all 0.5s var(--ease);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
@@ -1398,9 +1450,9 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 .about-card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 0, 64, 0.1);
-  transform: translateY(-6px);
+  border-color: rgba(255, 0, 64, 0.25);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.7), 0 0 48px rgba(255, 0, 64, 0.12), inset 0 0 32px rgba(255, 0, 64, 0.03);
+  transform: translateY(-8px);
 }
 
 .about-bio {
@@ -1561,7 +1613,7 @@ body.light-mode .contact-item:hover .ci-icon {
   overflow: hidden;
   opacity: 1;
   transform: scale(1);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px);
   animation: bubble-float 14s ease-in-out infinite;
   transition: all 0.4s var(--ease);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -1654,7 +1706,7 @@ body.light-mode .contact-item:hover .ci-icon {
   flex-direction: column;
   align-items: center;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px);
 }
 
 .softskill-card::before {
@@ -1676,9 +1728,10 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 .softskill-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-8px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 0, 64, 0.1);
+  border-color: var(--neon);
+  transform: translateY(-10px) scale(1.01);
+  box-shadow: 0 18px 56px rgba(0, 0, 0, 0.7), 0 0 48px rgba(255, 0, 64, 0.14), inset 0 0 28px rgba(255, 0, 64, 0.04);
+  background: rgba(13, 0, 3, 0.65);
 }
 
 .softskill-icon {
@@ -2222,7 +2275,7 @@ body.light-mode .contact-item:hover .ci-icon {
   transition: all 0.4s var(--ease);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px);
 }
 
 .edu-tl-card::before {
@@ -2360,14 +2413,14 @@ body.light-mode .contact-item:hover .ci-icon {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 28px;
-  transition: all 0.6s var(--ease);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
   overflow: hidden;
   perspective: 1200px;
   transform-style: preserve-3d;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(12px);
-  will-change: transform, box-shadow;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  will-change: transform, box-shadow, border-color;
 }
 
 .project-card::before {
@@ -2398,9 +2451,9 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 .project-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 0, 64, 0.12);
+  border-color: rgba(255, 0, 64, 0.35);
+  transform: translateY(-12px) scale(1.01);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 0, 64, 0.15), inset 0 0 32px rgba(255, 0, 64, 0.04);
 }
 
 .project-card:hover::before {
@@ -2439,8 +2492,8 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 .project-card:hover .proj-icon {
-  box-shadow: 0 0 20px var(--glow-color, var(--neon));
-  transform: rotate(-8deg) scale(1.05);
+  box-shadow: 0 0 28px var(--glow-color, var(--neon)), inset 0 0 16px rgba(255, 0, 64, 0.1);
+  transform: rotate(-8deg) scale(1.08);
 }
 
 .proj-links {
@@ -2533,9 +2586,9 @@ body.light-mode .contact-item:hover .ci-icon {
 .modal-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s var(--ease);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
@@ -2553,24 +2606,35 @@ body.light-mode .contact-item:hover .ci-icon {
   max-width: 700px;
   width: 100%;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 0, 64, 0.15);
   border-radius: var(--radius);
   padding: 40px;
   max-height: 85vh;
   overflow-y: auto;
-  animation: slideUp 0.4s var(--ease);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 0, 64, 0.1);
+  animation: slideUp 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.85), 0 0 60px rgba(255, 0, 64, 0.12), inset 0 0 32px rgba(255, 0, 64, 0.04);
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px) scale(0.95);
+    filter: blur(4px);
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -2900,9 +2964,10 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 .cert-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 0, 64, 0.08);
+  border-color: var(--cert-color, var(--neon));
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 16px 52px rgba(0, 0, 0, 0.7), 0 0 48px rgba(255, 0, 64, 0.14), inset 0 0 24px rgba(255, 0, 64, 0.04);
+  background: rgba(13, 0, 3, 0.65);
 }
 
 .cert-icon-wrap {
@@ -3207,15 +3272,18 @@ body.light-mode .contact-item:hover .ci-icon {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   resize: none;
   cursor: none;
+  position: relative;
 }
 
 .field input:focus,
 .field textarea:focus {
   border-color: var(--neon);
-  box-shadow: 0 0 20px rgba(255, 0, 64, 0.14);
+  box-shadow: 0 0 24px rgba(255, 0, 64, 0.2), inset 0 0 16px rgba(255, 0, 64, 0.04);
+  background: rgba(13, 0, 3, 0.7);
+  transform: translateY(-2px);
 }
 
 .field label {
@@ -3246,9 +3314,9 @@ body.light-mode .contact-item:hover .ci-icon {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--neon);
-  box-shadow: 0 0 8px var(--neon);
-  transition: width 0.4s var(--ease);
+  background: linear-gradient(90deg, transparent, var(--neon), transparent);
+  box-shadow: 0 0 12px var(--neon), 0 0 24px rgba(255, 0, 64, 0.3);
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   border-radius: 0 0 var(--radius-sm) var(--radius-sm);
 }
 
@@ -3717,14 +3785,17 @@ body.light-mode .contact-item:hover .ci-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.8s var(--ease), visibility 0.8s;
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.9s cubic-bezier(0.76, 0, 0.24, 1),
+    visibility 0.7s;
   will-change: transform, opacity;
 }
 
 .loader.hidden {
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-100%);
+  transform: scale(1.05) translateY(-8px);
   pointer-events: none;
 }
 
@@ -4095,7 +4166,7 @@ body.light-mode .particle-canvas {
   transition: all 0.5s var(--ease);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4585,3 +4656,194 @@ body,
     color-scheme: light;
   }
 }
+
+/* =====================================================
+   ✨ PREMIUM POLISH — Smooth & Polished Layer
+   ===================================================== */
+
+/* Hero: staggered entrance for each child element */
+.hero-badge       { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.10s both; }
+.hero-title       { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both; }
+.hero-typed       { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both; }
+.hero-profession  { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.42s both; }
+.hero-desc        { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.50s both; }
+.hero-btns        { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.60s both; }
+.hero-social      { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.70s both; }
+.hero-right       { animation: heroScaleIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both; }
+
+@keyframes heroEntry {
+  from { opacity: 0; transform: translateZ(0) translateY(28px); }
+  to   { opacity: 1; transform: translateZ(0) translateY(0);    }
+}
+
+@keyframes heroScaleIn {
+  from { opacity: 0; transform: translateZ(0) scale(0.88) translateY(24px); }
+  to   { opacity: 1; transform: translateZ(0) scale(1)    translateY(0);    }
+}
+
+
+/* Section heading underline slide-in */
+.section-line {
+  transform-origin: left;
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Card hover — premium lift + glow */
+.project-card,
+.cert-card,
+.achieve-card,
+.softskill-card,
+.about-card,
+.tl-card,
+.coding-profile-card {
+  transition:
+    transform  0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s var(--ease);
+}
+
+/* Tech icon hover — enhanced float + glow */
+.tech-icon:hover {
+  transform: translateY(-10px) scale(1.08);
+  border-color: rgba(255, 0, 64, 0.4);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 0, 64, 0.15);
+}
+
+.tech-icon:hover i {
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 6px var(--neon));
+}
+
+/* Neon btn — shimmer sweep on hover (polished) */
+.neon-btn:hover::after {
+  left: 100%;
+  transition: left 0.55s var(--ease);
+}
+
+/* Ghost btn hover — more visible */
+.ghost-btn:hover {
+  border-color: rgba(255, 0, 64, 0.5);
+  background: rgba(255, 0, 64, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(255, 0, 64, 0.14);
+  color: var(--neon-light);
+}
+
+/* Contact form field — smooth label float */
+.field {
+  position: relative;
+}
+
+.field input,
+.field textarea {
+  transition:
+    border-color 0.3s var(--ease),
+    box-shadow   0.3s var(--ease),
+    background   0.3s var(--ease);
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--neon);
+  box-shadow:
+    0 0 0 3px rgba(255, 0, 64, 0.08),
+    0 0 20px rgba(255, 0, 64, 0.12);
+  background: rgba(255, 0, 64, 0.02);
+}
+
+/* Scroll progress bar — gradient shimmer */
+.scroll-progress {
+  background: linear-gradient(
+    90deg,
+    var(--neon-alt) 0%,
+    var(--neon)     50%,
+    var(--neon-light) 100%
+  );
+  background-size: 200% 100%;
+  animation: progressShimmer 2s linear infinite;
+}
+
+@keyframes progressShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Nav link — smoother transition */
+.nav-link {
+  transition: color 0.25s var(--ease), text-shadow 0.25s var(--ease);
+}
+
+/* Footer back-to-top button */
+.back-top {
+  transition: transform 0.4s var(--spring), box-shadow 0.35s var(--ease);
+}
+
+.back-top:hover {
+  transform: translateY(-6px) scale(1.12) !important;
+  box-shadow: 0 12px 28px rgba(255, 0, 64, 0.3);
+}
+
+/* Social icons — more spring on hover */
+.social-icon,
+.contact-socials a {
+  transition: transform 0.4s var(--spring), color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Section dots — smoother active pulse */
+.section-dot.dot-active {
+  animation: dotActivePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes dotActivePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 0, 64, 0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(255, 0, 64, 0);  }
+}
+
+/* Achieve card hover glow */
+.achieve-card:hover {
+  border-color: rgba(255, 0, 64, 0.25);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.5),
+    0 0 32px rgba(255, 0, 64, 0.1);
+}
+
+/* Softskill card icon hover */
+.softskill-card:hover .softskill-icon {
+  transform: rotate(-8deg) scale(1.12);
+  box-shadow: 0 0 24px rgba(255, 0, 64, 0.2);
+}
+
+/* Profile image hover parallax effect */
+.profile-wrapper:hover .profile-img {
+  transform: scale(1.04);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Cert card hover icon */
+.cert-card:hover .cert-icon-wrap {
+  transform: rotate(-10deg) scale(1.14);
+  box-shadow: 0 0 28px var(--cert-color, var(--neon));
+}
+
+/* Accessibility: no animations for reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    transition-duration: 0.01ms !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero-badge, .hero-title, .hero-typed, .hero-profession,
+  .hero-desc, .hero-btns, .hero-social, .hero-right {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  body {
+    animation: none !important;
+  }
+}
+

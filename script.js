@@ -32,39 +32,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* =============================================
-     1. CINEMATIC BOOT LOADER
+     1. SMOOTH PAGE LOAD (fade-in instead of loader)
      ============================================= */
   const loader = document.getElementById('loader');
-  const loaderStatus = document.getElementById('loaderStatus');
 
   if (loader) {
-    let progress = 0;
-    const messages = [
-      'Initializing...',
-      'Loading projects...',
-      'Compiling code...',
-      'Optimizing...',
-      'Ready!'
-    ];
-
-    const interval = setInterval(() => {
-      progress += Math.random() * 12 + 5;
-      if (progress > 100) progress = 100;
-
-      const msgIdx = Math.floor((progress / 100) * (messages.length - 1));
-      loaderStatus.textContent = messages[msgIdx];
-
-      if (progress >= 100) {
-        clearInterval(interval);
-        setTimeout(() => {
-          loader.classList.add('hidden');
-          document.body.style.overflow = '';
-          spawnHeroDecorations();
-        }, 300);
-      }
-    }, 80);
-
-    document.body.style.overflow = 'hidden';
+    // Instantly fade out the loader for a smooth page entry
+    requestAnimationFrame(() => {
+      loader.classList.add('hidden');
+      document.body.style.overflow = '';
+      // Trigger hero decorations after a tiny delay
+      setTimeout(spawnHeroDecorations, 50);
+    });
+  } else {
+    setTimeout(spawnHeroDecorations, 50);
   }
 
 
@@ -377,6 +358,12 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================================= */
   document.querySelectorAll('.scroll-reveal').forEach(el => {
     el.style.setProperty('--d', el.dataset.delay || 0);
+
+    // Hero children use CSS stagger animations — pre-mark them visible
+    // so the scroll-reveal opacity:0 doesn't conflict.
+    if (el.closest('#home')) {
+      el.classList.add('visible');
+    }
   });
 
   const revealObserver = new IntersectionObserver(entries => {
@@ -386,9 +373,15 @@ document.addEventListener('DOMContentLoaded', () => {
         revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -60px 0px'  // trigger 60px before element enters viewport
+  });
 
-  document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.scroll-reveal').forEach(el => {
+    // Skip hero elements — already handled above
+    if (!el.closest('#home')) revealObserver.observe(el);
+  });
 
 
   /* =============================================
@@ -497,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* =============================================
-     13. COUNTER ANIMATION
+     13. COUNTER ANIMATION (smooth ease-out cubic)
      ============================================= */
   let countersDone = false;
 
@@ -505,9 +498,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.num[data-count]').forEach(el => {
       const target = parseInt(el.dataset.count);
       const start = performance.now();
+      const duration = target > 1000 ? 2200 : 1600;
       const tick = now => {
-        const p = Math.min((now - start) / 1800, 1);
-        el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
+        const p = Math.min((now - start) / duration, 1);
+        // Ease-out cubic: feels natural as numbers slow at the end
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target);
         if (p < 1) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
@@ -538,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.style.transform = `perspective(700px) rotateY(${x * rx}deg) rotateX(${-y * ry}deg) translateY(-${ty}px)`;
       });
       card.addEventListener('mouseleave', () => {
-        card.style.transition = 'transform 0.5s var(--ease), box-shadow 0.5s var(--ease)';
+        card.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s var(--ease)';
         card.style.transform = '';
       });
     });
@@ -550,6 +546,26 @@ document.addEventListener('DOMContentLoaded', () => {
   addTilt('.exp-card', 5, 5, 4);
   addTilt('.achieve-card', 8, 8, 6);
 
+  /* =============================================
+     14b. RIPPLE EFFECT — ALL BUTTONS
+     ============================================= */
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      ripple.className = 'btn-ripple';
+      const rect = btn.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 2;
+      ripple.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        left: ${e.clientX - rect.left - size / 2}px;
+        top:  ${e.clientY - rect.top  - size / 2}px;
+      `;
+      btn.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+  });
+
 
   /* =============================================
      15. CONTACT FORM
@@ -557,19 +573,34 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handled by EmailJS in emailjs-config.js
 
   /* =============================================
-     16. PARALLAX GLOWS ON SCROLL
+     16. UNIFIED SCROLL HANDLER
+     (nav + parallax glows + section dots — one rAF loop, passive)
      ============================================= */
   const glows = document.querySelectorAll('.glow');
-  let scrollTick = false;
+  // Combine ALL scroll-driven updates into one requestAnimationFrame per frame
+  let _scrollY = 0;
+  let _scrollTicking = false;
+
+  function onScrollFrame() {
+    _scrollY = window.scrollY;
+
+    // Nav scrolled class
+    nav.classList.toggle('scrolled', _scrollY > 50);
+
+    // Parallax glows — translateY only (GPU composited, no scale)
+    glows.forEach((g, i) => {
+      g.style.transform = `translateY(${_scrollY * (i + 1) * 0.022}px)`;
+    });
+
+    _scrollTicking = false;
+  }
+
   window.addEventListener('scroll', () => {
-    if (!scrollTick) {
-      requestAnimationFrame(() => {
-        glows.forEach((g, i) => { g.style.transform = `translateY(${window.scrollY * (i + 1) * 0.018}px)`; });
-        scrollTick = false;
-      });
-      scrollTick = true;
+    if (!_scrollTicking) {
+      requestAnimationFrame(onScrollFrame);
+      _scrollTicking = true;
     }
-  });
+  }, { passive: true });
 
 
   /* =============================================
@@ -787,32 +818,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (aboutGridSection) counterObserver.observe(aboutGridSection);
 
   /* =============================================
-     23. ENHANCED PARALLAX EFFECT FOR GLOWS
+     23. (unified scroll handler — see section 16)
      ============================================= */
-  let parallaxTicking = false;
-
-  window.addEventListener('scroll', () => {
-    if (!parallaxTicking) {
-      requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        glows.forEach((g, i) => {
-          g.style.transform = `translateY(${scrollY * (i + 1) * 0.03}px) scale(${1 + scrollY * 0.0001})`;
-        });
-        parallaxTicking = false;
-      });
-      parallaxTicking = true;
-    }
-  });
-
-  /* =============================================
-     24. GRADIENT TEXT ANIMATION ON TITLES
-     ============================================= */
-  const gradientTexts = document.querySelectorAll('.gradient-text, h1, h2, h3');
-  gradientTexts.forEach((text, i) => {
-    if (Math.random() > 0.5) {
-      text.classList.add('gradient-text');
-    }
-  });
+  // Parallax and scroll updates consolidated above.
 
   /* =============================================
      28. TECH STACK FILTER
