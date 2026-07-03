@@ -122,11 +122,11 @@ body {
 a {
   text-decoration: none;
   color: inherit;
-  cursor: none;
+  cursor: pointer;
 }
 
 button {
-  cursor: none;
+  cursor: pointer;
 }
 
 ul {
@@ -221,7 +221,8 @@ img {
   filter: blur(120px);
   opacity: 0.08;
   will-change: transform;
-  animation: float 14s ease-in-out infinite alternate;
+  /* Animation removed — parallax JS drives the transform instead.
+     Having both causes the two to fight, producing visible shaking. */
 }
 
 .glow-1 {
@@ -238,7 +239,6 @@ img {
   background: var(--neon-alt);
   bottom: -8%;
   left: -3%;
-  animation-delay: -7s;
 }
 
 .glow-3 {
@@ -247,25 +247,6 @@ img {
   background: var(--neon-orange);
   top: 40%;
   left: 50%;
-  animation-delay: -14s;
-}
-
-@keyframes float {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  33% {
-    transform: translate(40px, -30px) scale(1.1);
-  }
-
-  66% {
-    transform: translate(-30px, 40px) scale(0.9);
-  }
-
-  100% {
-    transform: translate(-20px, 20px) scale(0.95);
-  }
 }
 
 /* ===== NAV ===== */
@@ -427,7 +408,7 @@ body.light-mode .nav.scrolled {
   color: var(--text-2);
   font-size: 14px;
   transition: all 0.35s var(--ease);
-  cursor: none;
+  cursor: pointer;
   padding: 0;
   display: flex;
   align-items: center;
@@ -521,7 +502,9 @@ body.light-mode .softskill-icon,
 body.light-mode .theme-toggle,
 body.light-mode .social-icon,
 body.light-mode .nav-pill,
-body.light-mode .ghost-btn {
+body.light-mode .ghost-btn,
+body.light-mode .proj-links a,
+body.light-mode .featured-badge {
   background: var(--accent-soft);
   border-color: var(--accent-mid);
 }
@@ -769,7 +752,7 @@ body.light-mode .contact-item:hover .ci-icon {
   transition: all 0.4s var(--ease);
   position: relative;
   overflow: hidden;
-  cursor: none;
+  cursor: pointer;
   will-change: transform, box-shadow;
 }
 
@@ -896,7 +879,7 @@ body.light-mode .contact-item:hover .ci-icon {
   font-size: 17px;
   transition: all 0.4s var(--spring);
   position: relative;
-  cursor: none;
+  cursor: pointer;
 }
 
 .social-icon::before {
@@ -1159,6 +1142,7 @@ body.light-mode .contact-item:hover .ci-icon {
   margin: 0 auto;
   box-shadow: 0 0 10px var(--neon), 0 0 30px rgba(255, 0, 64, 0.2);
   border-radius: 2px;
+  /* Use transform: scaleX instead of animating width to avoid layout reflow */
   animation: lineShimmer 3s ease-in-out infinite;
 }
 
@@ -1166,12 +1150,12 @@ body.light-mode .contact-item:hover .ci-icon {
 
   0%,
   100% {
-    width: 50px;
+    transform: scaleX(1);
     opacity: 1
   }
 
   50% {
-    width: 80px;
+    transform: scaleX(1.6);
     opacity: 0.7
   }
 }
@@ -1295,17 +1279,8 @@ body.light-mode .contact-item:hover .ci-icon {
   }
 }
 
-/* Card 3D Tilt on Hover */
-.project-card {
-  perspective: 1200px;
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-  will-change: transform;
-}
-
-.project-card:hover {
-  animation: pulse-glow 1.5s ease-in-out;
-}
+/* Card 3D Tilt — handled by JS addTilt(), no CSS perspective needed.
+   Having both caused shaking due to transform conflicts. */
 
 /* Parallax background elements */
 .parallax-bg {
@@ -1532,24 +1507,10 @@ body.light-mode .contact-item:hover .ci-icon {
   letter-spacing: 1.5px;
 }
 
+/* bubble-float disabled — it fights with the 3D tilt JS on desktop,
+   causing visible shaking. The hover scale is enough motion. */
 @keyframes bubble-float {
-
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
-  }
-
-  25% {
-    transform: translateY(-8px) scale(1.02);
-  }
-
-  50% {
-    transform: translateY(-3px) scale(0.995);
-  }
-
-  75% {
-    transform: translateY(-6px) scale(1.01);
-  }
+  0%, 100% { transform: none; }
 }
 
 /* ===== TECH STACK FILTER ===== */
@@ -1612,10 +1573,9 @@ body.light-mode .contact-item:hover .ci-icon {
   position: relative;
   overflow: hidden;
   opacity: 1;
-  transform: scale(1);
   backdrop-filter: blur(4px);
-  animation: bubble-float 14s ease-in-out infinite;
-  transition: all 0.4s var(--ease);
+  /* Removed bubble-float animation — it conflicts with tilt JS and causes shaking */
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease), background 0.4s var(--ease);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -2413,14 +2373,12 @@ body.light-mode .contact-item:hover .ci-icon {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 28px;
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s var(--ease), border-color 0.35s var(--ease);
   position: relative;
   overflow: hidden;
-  perspective: 1200px;
-  transform-style: preserve-3d;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
-  will-change: transform, box-shadow, border-color;
+  will-change: transform;
 }
 
 .project-card::before {
@@ -2468,7 +2426,7 @@ body.light-mode .contact-item:hover .ci-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   min-height: 300px;
   position: relative;
 }
@@ -2496,36 +2454,73 @@ body.light-mode .contact-item:hover .ci-icon {
   transform: rotate(-8deg) scale(1.08);
 }
 
-.proj-links {
-  display: flex;
-  gap: 8px;
+/* Featured badge — stays in the proj-header image area */
+.featured-badge {
   position: absolute;
   top: 12px;
   right: 12px;
-  z-index: 10;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--neon);
+  background: rgba(255, 0, 64, 0.12);
+  border: 1px solid rgba(255, 0, 64, 0.25);
+  backdrop-filter: blur(8px);
+  z-index: 5;
+}
+
+/* Title row — project name + action buttons inline */
+.proj-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.proj-title-row h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.proj-links {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .proj-links a {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
-  border: 1px solid var(--neon);
+  border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  color: var(--neon);
-  transition: all 0.45s var(--spring);
-  background: rgba(255, 0, 64, 0.15);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 16px rgba(255, 0, 64, 0.2);
+  font-size: 13px;
+  color: var(--text-3);
+  transition: all 0.35s var(--ease);
+  background: rgba(255, 0, 64, 0.03);
 }
 
 .proj-links a:hover {
   color: var(--neon);
   border-color: var(--neon);
+  background: rgba(255, 0, 64, 0.1);
   transform: translateY(-2px);
-  box-shadow: 0 0 12px rgba(255, 0, 64, 0.2);
+  box-shadow: 0 0 14px rgba(255, 0, 64, 0.2);
+}
+
+.project-card:hover .proj-links a {
+  border-color: rgba(255, 0, 64, 0.2);
+  color: var(--neon);
 }
 
 .project-card h3 {
@@ -3274,7 +3269,7 @@ body.light-mode .contact-item:hover .ci-icon {
   outline: none;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   resize: none;
-  cursor: none;
+  cursor: text;
   position: relative;
 }
 
@@ -3602,12 +3597,18 @@ body.light-mode .contact-item:hover .ci-icon {
     min-width: unset;
   }
 
-  body,
+  body {
+    cursor: auto;
+  }
+
   a,
-  button,
+  button {
+    cursor: pointer;
+  }
+
   .field input,
   .field textarea {
-    cursor: auto;
+    cursor: text;
   }
 
   .cursor,
@@ -4171,7 +4172,7 @@ body.light-mode .particle-canvas {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  cursor: none;
+  cursor: pointer;
 }
 
 .coding-profile-card::before {
@@ -4366,10 +4367,9 @@ body.light-mode .particle-canvas {
   }
 }
 
-/* Smooth section transitions */
-.section {
-  animation: slideInUp 0.8s var(--ease);
-}
+/* Smooth section transitions — REMOVED.
+   Applying slideInUp to every .section caused cumulative layout shifts and jank.
+   Scroll-reveal handles per-element entrance instead. */
 
 /* Enhanced button transitions */
 .btn {
@@ -4391,20 +4391,9 @@ body.light-mode .particle-canvas {
   text-transform: uppercase;
 }
 
-/* Refined card shadows */
-.project-card,
-.cert-card,
-.achieve-card,
-.softskill-card,
-.contact-item,
-.exp-card,
-.tl-card,
-.about-card,
-.coding-profile-card {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  transition: box-shadow 0.5s var(--ease), transform 0.5s var(--ease);
-}
-
+/* Refined card shadows — keep shadow only, don't override transitions here.
+   The individual component rules already define correct transitions.
+   Overriding them here with a blanket 'transition' causes specificity fights. */
 .project-card:hover,
 .cert-card:hover,
 .achieve-card:hover,
@@ -4514,25 +4503,14 @@ a {
   }
 }
 
-/* Hardware acceleration for animated elements */
+/* Hardware acceleration for cursor elements only.
+   REMOVED cards from this block — the blanket `transform: translateZ(0)` and
+   `perspective: 1000px` was conflicting with hover transforms and JS tilt,
+   causing visible shaking/jittering on desktop. */
 .cursor,
-.cursor-trail,
-.profile-img,
-.neon-text,
-.hero-title,
-.project-card,
-.exp-card,
-.cert-card,
-.achieve-card,
-.softskill-card,
-.contact-item,
-.tl-card,
-.tech-icon,
-.about-card {
+.cursor-trail {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  perspective: 1000px;
-  transform: translateZ(0);
 }
 
 /* Layout containment for independent components — only style containment, not layout/paint */
@@ -4609,16 +4587,9 @@ body,
     transform-style: flat;
   }
 
-  /* Disable complex animations on mobile */
-  .float-bounce,
-  .float-rotate,
-  @keyframes float-bounce,
-  @keyframes float-rotate {
+  /* Disable complex float animations on mobile */
+  .float-element {
     animation: none !important;
-  }
-
-  .project-card:hover {
-    animation: pulse-glow 1s ease-in-out !important;
   }
 }
 
@@ -4682,25 +4653,13 @@ body,
 }
 
 
-/* Section heading underline slide-in */
+/* Section heading underline slide-in — use transform-origin for scaleX animation */
 .section-line {
-  transform-origin: left;
-  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
 }
 
-/* Card hover — premium lift + glow */
-.project-card,
-.cert-card,
-.achieve-card,
-.softskill-card,
-.about-card,
-.tl-card,
-.coding-profile-card {
-  transition:
-    transform  0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.35s var(--ease);
-}
+/* Card hover transitions are set in each component block.
+   No blanket override here — that caused specificity fights and jank. */
 
 /* Tech icon hover — enhanced float + glow */
 .tech-icon:hover {

@@ -530,11 +530,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const rect = card.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transition = 'none';
+        /* Use a very short transition instead of 'none' to avoid jerky snapping.
+           Setting transition to 'none' causes visible shaking when combined with
+           CSS transition declarations that get re-applied on mouseleave. */
+        card.style.transition = 'transform 0.08s linear';
         card.style.transform = `perspective(700px) rotateY(${x * rx}deg) rotateX(${-y * ry}deg) translateY(-${ty}px)`;
       });
       card.addEventListener('mouseleave', () => {
-        card.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s var(--ease)';
+        card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
         card.style.transform = '';
       });
     });
