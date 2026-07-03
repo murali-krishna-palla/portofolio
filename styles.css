@@ -693,8 +693,15 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 @keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .typed-cursor {
@@ -768,9 +775,9 @@ body.light-mode .contact-item:hover .ci-icon {
 }
 
 @keyframes btnRipple {
-  to { 
-    transform: scale(4.5); 
-    opacity: 0; 
+  to {
+    transform: scale(4.5);
+    opacity: 0;
   }
 }
 
@@ -1100,7 +1107,8 @@ body.light-mode .contact-item:hover .ci-icon {
   z-index: 1;
   /* Skip rendering off-screen sections entirely — biggest scroll perf win */
   content-visibility: auto;
-  contain-intrinsic-size: 0 600px; /* estimated height so layout doesn't shift */
+  contain-intrinsic-size: 0 600px;
+  /* estimated height so layout doesn't shift */
 }
 
 .section-alt {
@@ -1346,7 +1354,7 @@ body.light-mode .contact-item:hover .ci-icon {
   opacity: 0;
   /* No filter, no color, no shadow — only compositor properties */
   transition:
-    opacity   0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: calc(var(--d, 0) * 120ms);
   will-change: opacity, transform;
@@ -1510,7 +1518,11 @@ body.light-mode .contact-item:hover .ci-icon {
 /* bubble-float disabled — it fights with the 3D tilt JS on desktop,
    causing visible shaking. The hover scale is enough motion. */
 @keyframes bubble-float {
-  0%, 100% { transform: none; }
+
+  0%,
+  100% {
+    transform: none;
+  }
 }
 
 /* ===== TECH STACK FILTER ===== */
@@ -2628,6 +2640,7 @@ body.light-mode .contact-item:hover .ci-icon {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -4633,23 +4646,60 @@ body,
    ===================================================== */
 
 /* Hero: staggered entrance for each child element */
-.hero-badge       { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.10s both; }
-.hero-title       { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both; }
-.hero-typed       { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both; }
-.hero-profession  { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.42s both; }
-.hero-desc        { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.50s both; }
-.hero-btns        { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.60s both; }
-.hero-social      { animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.70s both; }
-.hero-right       { animation: heroScaleIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both; }
+.hero-badge {
+  animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.10s both;
+}
+
+.hero-title {
+  animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
+}
+
+.hero-typed {
+  animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.34s both;
+}
+
+.hero-profession {
+  animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.42s both;
+}
+
+.hero-desc {
+  animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.50s both;
+}
+
+.hero-btns {
+  animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.60s both;
+}
+
+.hero-social {
+  animation: heroEntry 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.70s both;
+}
+
+.hero-right {
+  animation: heroScaleIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
 
 @keyframes heroEntry {
-  from { opacity: 0; transform: translateZ(0) translateY(28px); }
-  to   { opacity: 1; transform: translateZ(0) translateY(0);    }
+  from {
+    opacity: 0;
+    transform: translateZ(0) translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateZ(0) translateY(0);
+  }
 }
 
 @keyframes heroScaleIn {
-  from { opacity: 0; transform: translateZ(0) scale(0.88) translateY(24px); }
-  to   { opacity: 1; transform: translateZ(0) scale(1)    translateY(0);    }
+  from {
+    opacity: 0;
+    transform: translateZ(0) scale(0.88) translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateZ(0) scale(1) translateY(0);
+  }
 }
 
 
@@ -4699,8 +4749,8 @@ body,
 .field textarea {
   transition:
     border-color 0.3s var(--ease),
-    box-shadow   0.3s var(--ease),
-    background   0.3s var(--ease);
+    box-shadow 0.3s var(--ease),
+    background 0.3s var(--ease);
 }
 
 .field input:focus,
@@ -4715,19 +4765,22 @@ body,
 
 /* Scroll progress bar — gradient shimmer */
 .scroll-progress {
-  background: linear-gradient(
-    90deg,
-    var(--neon-alt) 0%,
-    var(--neon)     50%,
-    var(--neon-light) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--neon-alt) 0%,
+      var(--neon) 50%,
+      var(--neon-light) 100%);
   background-size: 200% 100%;
   animation: progressShimmer 2s linear infinite;
 }
 
 @keyframes progressShimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Nav link — smoother transition */
@@ -4757,8 +4810,15 @@ body,
 }
 
 @keyframes dotActivePulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 0, 64, 0.4); }
-  50%       { box-shadow: 0 0 0 6px rgba(255, 0, 64, 0);  }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 64, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 0, 64, 0);
+  }
 }
 
 /* Achieve card hover glow */
@@ -4795,14 +4855,21 @@ body,
     opacity: 1 !important;
     transform: none !important;
   }
-  .hero-badge, .hero-title, .hero-typed, .hero-profession,
-  .hero-desc, .hero-btns, .hero-social, .hero-right {
+
+  .hero-badge,
+  .hero-title,
+  .hero-typed,
+  .hero-profession,
+  .hero-desc,
+  .hero-btns,
+  .hero-social,
+  .hero-right {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
+
   body {
     animation: none !important;
   }
 }
-
