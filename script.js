@@ -252,10 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animateCursor();
 
-    document.querySelectorAll('a, button, .tech-icon, .project-card, .social-icon, .section-dot, .cert-card, .exp-card, .achieve-card').forEach(el => {
-      el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); trail.classList.add('hover'); });
-      el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); trail.classList.remove('hover'); });
-    });
+    // Removed hover enlargement to keep the cursor as a small red dot only.
+    // Previously the cursor grew into a ring on interactive elements; that behavior was removed per request.
   }
 
 
@@ -860,20 +858,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const projectData = [
     {
       id: 0,
-      title: 'PathForge AI',
-      icon: '<i class="fas fa-robot"></i>',
-      date: 'Jan 2026',
-      overview: 'AI-powered career roadmap platform that generates personalized guidance based on user skills and goals. The platform uses machine learning to analyze career paths and recommend learning resources.',
+      title: 'ORDIX — Restaurant Operations Management System',
+      icon: '<i class="fas fa-utensils"></i>',
+      date: 'Sep 2026',
+      overview: 'ORDIX is a single-restaurant internal web app covering table management, menu, orders, kitchen display, billing, payments (cash + Razorpay test mode), inventory, and reporting. Designed as a modular monolith with real-time updates and role-based access control.',
       features: [
-        'AI-powered skill gap analysis using LLM recommendations',
-        'Personalized career roadmap generation',
-        'Learning resource recommendations',
-        'Progress tracking and milestone achievements',
-        'Integration with multiple AI models'
+        'Table management and occupancy tracking',
+        'Menu management with categories and items',
+        'Order lifecycle: New → Preparing → Ready → Served',
+        'Kitchen Display System with real-time Socket.IO updates',
+        'Billing and payments (Cash + Razorpay Test Mode)',
+        'Inventory tracking and ingredient usage',
+        'Reporting: revenue, top items, table utilization, payment breakdown',
+        'JWT authentication, RBAC, Sequelize ORM with PostgreSQL/Neon'
       ],
-      tech: ['React', 'Node.js', 'MongoDB', 'Gemini API', 'Express.js', 'JWT Auth'],
+      tech: ['Node.js', 'Express', 'Sequelize', 'PostgreSQL', 'React', 'Vite', 'Tailwind CSS', 'Socket.IO', 'JWT', 'Razorpay (Test)'],
       liveLink: '#',
-      gitLink: 'https://github.com/murali-krishna-palla/path-finder'
+      gitLink: 'https://github.com/murali-krishna-palla/restaurant-manager'
     },
     {
       id: 1,

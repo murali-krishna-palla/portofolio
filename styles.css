@@ -522,6 +522,51 @@ body.light-mode .tech-icon:hover {
   background: var(--bg-card-hover);
 }
 
+/* ===== TECH ICON BUBBLES ===== */
+.tech-icon {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  padding: 10px;
+  gap: 6px;
+  background: radial-gradient(circle at 28% 28%, rgba(255,255,255,0.04), rgba(255,255,255,0.01)), linear-gradient(180deg, rgba(255,0,64,0.06), rgba(255,0,64,0.02));
+  border: 1px solid rgba(255,0,64,0.12);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.6), 0 0 18px rgba(255,0,64,0.06);
+  color: var(--text);
+  transition: transform 0.28s var(--spring), box-shadow 0.28s var(--ease), background 0.28s;
+  text-align: center;
+}
+
+.tech-icon i {
+  font-size: 28px;
+  color: var(--neon);
+  filter: drop-shadow(0 0 8px rgba(255,0,64,0.22));
+}
+
+.tech-icon span {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 6px;
+}
+
+.tech-icon:hover {
+  transform: translateY(-6px) scale(1.06);
+  box-shadow: 0 22px 44px rgba(0,0,0,0.65), 0 0 30px rgba(255,0,64,0.12);
+  background: linear-gradient(135deg, rgba(255,0,64,0.09), rgba(255,0,64,0.04));
+  border-color: rgba(255,0,64,0.22);
+}
+
+/* Slightly smaller on small screens */
+@media (max-width: 720px) {
+  .tech-icon { width: 68px; height: 68px; }
+  .tech-icon i { font-size: 22px; }
+  .tech-icon span { font-size: 11px; }
+}
+
 body.light-mode .project-card:hover,
 body.light-mode .cert-card:hover,
 body.light-mode .achieve-card:hover,
