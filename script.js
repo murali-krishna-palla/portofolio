@@ -873,7 +873,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'JWT authentication, RBAC, Sequelize ORM with PostgreSQL/Neon'
       ],
       tech: ['Node.js', 'Express', 'Sequelize', 'PostgreSQL', 'React', 'Vite', 'Tailwind CSS', 'Socket.IO', 'JWT', 'Razorpay (Test)'],
-      liveLink: '#',
+      liveLink: 'https://restaurant-manager-git-main-muralis-projects-53a36327.vercel.app/',
       gitLink: 'https://github.com/murali-krishna-palla/restaurant-manager'
     },
     {
